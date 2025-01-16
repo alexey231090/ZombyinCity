@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using FpsZomby;
 
+
 public class Player : MonoBehaviour
 {
  private Dictionary<Type, IPlayerBehaviour> behaviorsMap = new Dictionary<Type, IPlayerBehaviour>();
 
- private IPlayerBehaviour behaviorCurrent; // ������� ���������
+ private IPlayerBehaviour behaviorCurrent; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     
 
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour
 
 
 
-    //------------------------------------------------------------------�������� ����� ������� ����������� �� IPlayer... � ������
+    //------------------------------------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ IPlayer... пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     private void InitBehaviors()
     {     
 
@@ -68,10 +69,10 @@ public class Player : MonoBehaviour
 
 
 
-    //------------------------------------------------------------------�������� ����� ������ ��� ������
+    //------------------------------------------------------------------пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public IPlayerBehaviour SetBehaviourCrowbar()                                                          
     {
-        IPlayerBehaviour behaviour = this.GetBihevior<PlayerCrowbarBehaviur>();     //---------------------- �������� ���
+        IPlayerBehaviour behaviour = this.GetBihevior<PlayerCrowbarBehaviur>();     //---------------------- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
        return behaviour;
         
     }

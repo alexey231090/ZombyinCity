@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-
+//РўРµСЃС‚ РєРѕРјРµРЅС‚Р°СЂРёСЏ
 public class StateFireWepon : StateMachineBehaviour
 {
     [Inject]
@@ -20,7 +20,7 @@ public class StateFireWepon : StateMachineBehaviour
 
    public Wepon wepon;
 
-    bool hasExecuted; // Флаг для отслеживания выполнения
+    bool hasExecuted; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     IStateFire stateFire;  
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -74,7 +74,7 @@ public class StateFireWepon : StateMachineBehaviour
                 if (stateInfo.normalizedTime >= 0.451f)
                 {
                    
-                    // Ваш код, который должен выполняться в нужном кадре анимации
+                    // пїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     stateFire.FireWepon(playerSwitchingStates , soundManager);
                     
                 }

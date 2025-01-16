@@ -61,42 +61,36 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
     
 
     public void Update()
+{
+    if (Input.GetMouseButtonDown(0))
     {
+        ray = switchState.RayCastCameraCenter();
 
-       
-
-        if (Input.GetMouseButtonDown(0))
+        // Проверяем, попадает ли луч в объект
+        if (Physics.Raycast(ray, out hit))
         {
-             ray = switchState.RayCastCameraCenter();
+            // Получаем расстояние от начала луча до объекта
+            float distance = hit.distance;
 
-            if (Physics.Raycast(ray, out hit))
+            if (hit.distance < crowBarDistance)
             {
-                // Получаем расстояние от начала луча до объекта
-                float distance = hit.distance;
-
-               if(hit.distance < crowBarDistance)
-                {
-
-                    animator.SetTrigger(CrowbarHit);
-
-                }
-
-               else
-                {
-                    animator.SetTrigger(CrowbarMiss);
-                    soundManager.FireAudio[5].Play();
-                }
-
-
+                animator.SetTrigger(CrowbarHit);
             }
-
-           
-        }  
-        
-
-
+            else
+            {
+                animator.SetTrigger(CrowbarMiss);
+                soundManager.FireAudio[5].Play();
+                
+            }
+        }
+        else
+        {
+            // Если луч не попал ни в один объект
+            animator.SetTrigger(CrowbarMiss);
+            soundManager.FireAudio[5].Play();            
+        }
     }
-
+}
     public void FireWepon(PlayerSwitchingStates playerSwitching, SoundManager soundManager)
     {
         if (hasFired)

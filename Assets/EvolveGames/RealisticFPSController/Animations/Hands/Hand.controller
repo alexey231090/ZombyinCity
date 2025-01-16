@@ -13,6 +13,7 @@ AnimatorState:
   m_Transitions:
   - {fileID: 2901603098810904314}
   - {fileID: -274098971100721358}
+  - {fileID: 75290649478851607}
   m_StateMachineBehaviours:
   - {fileID: 7282174733747669088}
   m_Position: {x: 50, y: 50, z: 0}
@@ -514,10 +515,10 @@ AnimatorStateMachine:
     m_Position: {x: -780, y: -990, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6370101730841998763}
-    m_Position: {x: -1560, y: -1040, z: 0}
+    m_Position: {x: -1570, y: -1370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7655927390648466234}
-    m_Position: {x: -1560, y: -770, z: 0}
+    m_Position: {x: -1140, y: -1350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6724710252660174069}
     m_Position: {x: -1160, y: -900, z: 0}
@@ -1419,6 +1420,31 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!1101 &75290649478851607
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: CrowbarHit
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 7655927390648466234}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.07587516
+  m_TransitionOffset: 0
+  m_ExitTime: 0.9172271
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &285723971694903169
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
