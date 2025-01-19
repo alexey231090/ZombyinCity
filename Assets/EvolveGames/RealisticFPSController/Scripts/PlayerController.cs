@@ -22,7 +22,7 @@ namespace EvolveGames
 
         [Header("PlayerController")]
         [SerializeField] public Transform Camera;
-        [SerializeField] public ItemChange Items;
+        //[SerializeField] public ItemChange Items;
         [SerializeField, Range(1, 10)] float walkingSpeed = 3.0f;
         [Range(0.1f, 5)] public float CroughSpeed = 1.0f;
         [SerializeField, Range(2, 20)] float RuningSpeed = 4.0f;
@@ -80,7 +80,7 @@ namespace EvolveGames
         {
             
             characterController = GetComponent<CharacterController>();
-            if (Items == null && GetComponent<ItemChange>()) Items = GetComponent<ItemChange>();
+           // if (Items == null && GetComponent<ItemChange>()) Items = GetComponent<ItemChange>();
             cam = GetComponentInChildren<Camera>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
