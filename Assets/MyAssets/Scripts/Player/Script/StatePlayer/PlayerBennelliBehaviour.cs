@@ -10,7 +10,7 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
     SoundManager soundManager;
     int myIndex = 2;   
     int spread = 70; // Разброс
-    static int ammo = 8; //кол патронов
+    static int ammo = 800; //кол патронов
     float myDemage = 15;
     static int allammo;
     int maxMagazine = 8;

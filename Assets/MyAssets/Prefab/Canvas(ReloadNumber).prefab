@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1799196175165769047}
   - component: {fileID: 1799196175165769041}
   - component: {fileID: 1799196175165769040}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: ShopWepon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.85
+  m_fontSize: 18
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 1799196175376585534}
   - component: {fileID: 1799196175376585528}
   - component: {fileID: 1799196175376585535}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: OnTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 1799196176061072022}
   - component: {fileID: 1799196176061072016}
   - component: {fileID: 1799196176061072023}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: PatronText(TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.3
+  m_fontSize: 22.65
   m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 1799196176181858918}
   - component: {fileID: 1799196176181858914}
   - component: {fileID: 1799196176181858915}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas(ReloadNumber)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 1799196176214200145}
   - component: {fileID: 1799196176214200147}
   - component: {fileID: 1799196176214200146}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.03641718, y: 0.02225926}
   m_AnchorMax: {x: 0.099637605, y: 0.09362961}
-  m_AnchoredPosition: {x: 2.5, y: 0}
+  m_AnchoredPosition: {x: 2.500061, y: 0}
   m_SizeDelta: {x: -6, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1799196176214200147
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.8
+  m_fontSize: 22.7
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 1799196176247534790}
   - component: {fileID: 1799196176247534784}
   - component: {fileID: 1799196176247534791}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: FaceBlood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 1799196176711082043}
   - component: {fileID: 1799196176711082037}
   - component: {fileID: 1799196176711082036}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: LifeIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,7 +778,7 @@ GameObject:
   - component: {fileID: 1799196177061994982}
   - component: {fileID: 1799196177061994976}
   - component: {fileID: 1799196177061994983}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

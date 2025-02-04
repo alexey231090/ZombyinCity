@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,7 +96,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5983707349689788507}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.58
+  m_Radius: 0.46
   m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
@@ -105,8 +105,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.66
-  m_BaseOffset: 1
+  m_Height: 1.69
+  m_BaseOffset: 1.11
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &5983707349689788505
@@ -496,6 +496,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.000017136332
       objectReference: {fileID: 0}
+    - target: {fileID: -5602156011692487775, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -5602156011692487775, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: -5561550452697079657, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -875,6 +883,18 @@ PrefabInstance:
     - target: {fileID: -1425791611860619382, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1372682465251703209, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -1372682465251703209, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -1372682465251703209, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: -1268151995469589007, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
       propertyPath: m_Layer
@@ -1299,6 +1319,14 @@ PrefabInstance:
     - target: {fileID: 2916570863362053800, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.0045508733
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946127283979886938, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946127283979886938, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3047284246813455858, guid: 6b6b1aac099baf54e901ec98049c2948, type: 3}
       propertyPath: m_Layer

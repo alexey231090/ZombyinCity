@@ -1,6 +1,5 @@
 using UnityEngine;
 using FPSGame;
-using Unity.VisualScripting;
 
 public class PlayerBehavierActiv : IPlayerBihevior
 {
