@@ -32,7 +32,9 @@ namespace FpsZomby {
         bool onAttack = false;
 
         public float bodyClearTime = 30;
-        
+
+        public ParticleSystem footDust;
+
 
         private void Awake()
         {
@@ -183,6 +185,9 @@ namespace FpsZomby {
 
 
                         isRunning = animator.GetBool("isRun");
+
+                        footDust.Play();
+
                     }
                 }
             }
@@ -331,6 +336,8 @@ namespace FpsZomby {
             this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
 
             StartCoroutine(WaitClierBody());
+
+            footDust.Stop();
 
         }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 462984984}
   - component: {fileID: 462984983}
   m_Layer: 0
-  m_Name: LegsSmoke
+  m_Name: foodDust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462984982}
   m_LocalRotation: {x: -0.69596386, y: 0.6966242, z: 0.12503892, w: 0.12130265}
-  m_LocalPosition: {x: -0.112, y: -1.13, z: -0.229}
+  m_LocalPosition: {x: -0.054, y: -1.13, z: 0.143}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 1
   autoRandomSeed: 1
   startDelay:
@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.6603774, g: 0.65103245, b: 0.65103245, a: 0.2627451}
+      maxColor: {r: 0.6603774, g: 0.65103245, b: 0.65103245, a: 0.15686275}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -601,14 +601,14 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 32
+    maxNumParticles: 20
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -0.01
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4951,6 +4951,7 @@ MonoBehaviour:
   statusZombi: 0
   LifeZombi: 100
   bodyClearTime: 30
+  footDust: {fileID: 462984984}
 --- !u!1001 &5983707350081843576
 PrefabInstance:
   m_ObjectHideFlags: 0

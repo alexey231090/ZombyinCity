@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-//Тест коментария
+
 public class StateFireWepon : StateMachineBehaviour
 {
     [Inject]
@@ -20,7 +20,7 @@ public class StateFireWepon : StateMachineBehaviour
 
    public Wepon wepon;
 
-    bool hasExecuted; // ���� ��� ������������ ����������
+    bool hasExecuted; 
 
     IStateFire stateFire;  
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
