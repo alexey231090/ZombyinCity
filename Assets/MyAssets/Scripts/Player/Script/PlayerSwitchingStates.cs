@@ -467,7 +467,7 @@ public class PlayerSwitchingStates : MonoBehaviour
     // При поподании в стену / Обрабатываем поподание Луча
     public void ShootInWall(Ray ray, GameObject bullet)
     {
-        // Настройте LayerMask для игнорирования слоя "Player"
+        // Настройки LayerMask для игнорирования слоёв при поподании
         int playerLayer = LayerMask.NameToLayer("Player");
         int ammoLayer = LayerMask.NameToLayer("Bullets");
         int colliderWall = LayerMask.NameToLayer("colliderWall");//колайдер невидемой стены 
