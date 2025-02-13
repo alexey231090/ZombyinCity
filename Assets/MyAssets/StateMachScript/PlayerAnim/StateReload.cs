@@ -34,6 +34,8 @@ public class StateReload : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
+        
+
          hasExecuted = false; // Флаг для отслеживания выполнения
 
         playerSwitchingStates = FindObjectOfType<PlayerSwitchingStates>();
@@ -53,6 +55,8 @@ public class StateReload : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+
+        
 
         switch (wepon)
         {
@@ -97,7 +101,7 @@ public class StateReload : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       
+        animator.SetBool("ReloadBool", false);// отключаем переход к анимации перезарядки
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

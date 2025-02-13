@@ -22,12 +22,16 @@ public class PlayerSwitchingStates : MonoBehaviour
 
     public Animator AnimatorIsDead;
 
+    public Animator hendAnim;
+
     public enum Weapons
     {
+        None,
         Crowbar,
         Gun,
         Bennelli_M4,
         AK74
+        
 
     }
     public static Weapons weapon;
@@ -84,7 +88,8 @@ public class PlayerSwitchingStates : MonoBehaviour
     private void Start()
     {
         playerController = this.GetComponent<PlayerController>();
-              
+
+        weapon = Weapons.None;
 
         playerLife = 100;
 
@@ -335,7 +340,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             AnimatorIsDead.SetBool("isDead", true);
 
-            soundManager.aScreamFromBlow.Stop();//Звук от Player "Aauuf"
+            soundManager.aScreamFromBlow.Stop();//Стоп Звук от Player "Aauuf"
         }
     }
 
@@ -366,6 +371,26 @@ public class PlayerSwitchingStates : MonoBehaviour
 
         switch (weapon)
         {
+
+
+            // --------------------------------------------- Нет оружия
+            case Weapons.None:
+
+
+                print("Нет Оружия");
+
+                hendAnim.SetInteger("WeponNum", -1);
+
+               foreach(GameObject wepon in weponArray)
+                {
+                    wepon.SetActive(false);
+                    
+                }
+
+                break;
+
+
+
             // --------------------------------------------- Выдерга
             case Weapons.Crowbar:
               
@@ -425,6 +450,19 @@ public class PlayerSwitchingStates : MonoBehaviour
     {
         if (playerLife > 0)
         {
+
+
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                weapon = Weapons.None;
+
+                selectWepon.OnNext(weapon.ToString());
+
+            }
+
+
+
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 weapon = Weapons.Crowbar;

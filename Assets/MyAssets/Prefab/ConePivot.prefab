@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 8012688446147700615}
   - component: {fileID: 5922093312326209406}
   - component: {fileID: 6263852299195946943}
-  - component: {fileID: 4437384601076705659}
-  - component: {fileID: 2956285871366420225}
   m_Layer: 8
   m_Name: ConePivot
   m_TagString: Untagged
@@ -29,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4627522183644511466}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2142.36, y: -19.43, z: -2095.2122}
-  m_LocalScale: {x: 1.1919413, y: 1.1919413, z: 1.1919413}
+  m_LocalScale: {x: 0.5152341, y: 0.5152341, z: 0.5152341}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7838815323253289870}
@@ -86,31 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4437384601076705659
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4627522183644511466}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.891292, z: 1}
-  m_Center: {x: 0, y: -0.44564688, z: 0}
---- !u!114 &2956285871366420225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4627522183644511466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e179c73fdeee444288e490245b323ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7838815323253289857
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +471,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1940
+  m_VersionIndex: 1949
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
