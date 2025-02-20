@@ -10,10 +10,11 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
     SoundManager soundManager;
     int myIndex = 2;   
     int spread = 70; // Разброс
-    static int ammo = 800; //кол патронов
+    static int ammo = 4; //кол патронов
     float myDemage = 15;
     static int allammo;
     int maxMagazine = 8;
+    
 
    public static readonly Subject<int> bennelliIntSubject = new();
 
@@ -73,11 +74,15 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 
     }
 
+    // Выстрел
     void IPlayerBehaviour.Update()
     {
-        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // Выстрел
+        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) 
         {            
-            animator.SetTrigger("OnFire");         
+            animator.SetTrigger("OnFire");
+
+            //Общее количество патрон в аниматор
+            animator.SetInteger("AllAmmoBennelli", allammo);
         }
 
         if (Input.GetMouseButtonDown(0) && ammo <= 0 && IsReloading() == false)
@@ -85,8 +90,8 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
             soundManager.noAmmoSound.Play();
         }
 
-
-        if (Input.GetKeyDown(KeyCode.R) && ammo < 8 && allammo != 0) // Перезарядка
+        // Перезарядка
+        if (Input.GetKeyDown(KeyCode.R) && ammo < 8 && allammo != 0) 
         {
 
 
@@ -101,6 +106,17 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
 
         }
+        //Авто перезарядка при 0
+        else if(ammo == 0 && allammo != 0)
+        {
+            animator.SetTrigger("Reload");
+
+
+            bennelliIntSubject.OnNext(ammo);
+
+
+            PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
+        }
 
 
 
@@ -112,6 +128,7 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
     void SoundReload()
     {
         soundManager.ReloadAudio[1].Play();
+
     }
 
     // Событие выстрела! Для точной синхронной работы эффектов и действий
@@ -140,6 +157,8 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
         bennelliIntSubject.OnNext(ammo);
 
 
+
+
     }
 
 
@@ -158,6 +177,10 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
             PlayerSwitchingStates.weaponBullets["Bennelli_M4"] = allammo;
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
             bennelliIntSubject.OnNext(ammo); // Обновляем количество патронов в дробовике
+
+
+            //Общее количество патрон в аниматор
+            animator.SetInteger("AllAmmoBennelli", allammo);
         }
     }
 
