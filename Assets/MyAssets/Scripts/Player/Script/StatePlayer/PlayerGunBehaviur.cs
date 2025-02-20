@@ -66,11 +66,11 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
         // Создаем Observable для отслеживания нажатий клавиши R
-        //Observable.EveryUpdate()
+        Observable.EveryUpdate()
 
-        //    .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // Проверяем условия            
-        //    .Subscribe(_ => Reload()) // Подписываемся на событие Нажатия R
-        //    .AddTo(_disposable);
+            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // Проверяем условия            
+            .Subscribe(_ => Reload()) // Подписываемся на событие Нажатия R
+            .AddTo(_disposable);
 
 
 
@@ -117,11 +117,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
             soundmanager.noAmmoSound.Play();
         }
 
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reload();
-        }
+        
 
 
 
@@ -129,7 +125,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
         if (ammo == 0 && allammo != 0)
         {
             Reload();
-            FinishRelad();
+            
         }
 
     }
