@@ -13,8 +13,9 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
     static public int ammo = 12; //патроны  
     int allammo;
     int maxMagazine = 12;
+    bool ExitTime = false;
 
-    
+
 
     public static readonly Subject<int> gunIntSubject = new();
     
@@ -122,11 +123,13 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
         //Если кончилась обоима то делаем перезарядку
-        if (ammo == 0 && allammo != 0)
+        if (ammo == 0 && allammo != 0 && ExitTime == false)
         {
             Reload();
             
         }
+
+        
 
     }
 
@@ -138,12 +141,13 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
         soundmanager.ReloadAudio[0].Play();
         animator.SetBool("ReloadBool",true);
 
-        
+        ExitTime = true;
     }
 
 
     void FinishRelad()
     {
+        ExitTime = false;
         // Определяем, сколько патронов не хватает для достижения maxMagazine
         int neededAmmo = maxMagazine - ammo;
 
