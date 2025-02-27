@@ -51,7 +51,7 @@ namespace FpsZomby {
 
         private void Start()
         {
-            // Устанавливаем начальное состояние при запуске игры
+            // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ РґР»СЏ РєР°Р¶РґРѕРіРѕ Р·РѕРјР±Рё
             previusStatus = statusZombi;
             EnterState(statusZombi);
 
@@ -67,7 +67,7 @@ namespace FpsZomby {
 
 
 
-        //-------------------------------------------------------------------------------------События подписки--------------------------------------------------
+        //-------------------------------------------------------------------------------------РћСЃРЅРѕРІРЅС‹Рµ СЃРѕР±С‹С‚РёСЏ--------------------------------------------------
 
         private void OnEnable()
         {
@@ -97,7 +97,7 @@ namespace FpsZomby {
         private void Update()
         {
             OnStateZombi();
-            UpdateState(); // Вызов метода обновления для текущего состояния
+            UpdateState(); // Р’С‹Р·РѕРІ РјРµС‚РѕРґР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
 
 
 
@@ -126,11 +126,11 @@ namespace FpsZomby {
 
         private void OnStateZombi()
         {
-            // Для разового исполнения
+            // Р•СЃР»Рё СЃРѕСЃС‚РѕСЏРЅРёРµ Р·РѕРјР±Рё РёР·РјРµРЅРёР»РѕСЃСЊ
             if (statusZombi != previusStatus)
             {
-                ExitState(previusStatus); // Выход из предыдущего состояния                     
-                EnterState(statusZombi);   // Вход в новое состояние
+                ExitState(previusStatus); // Р’С‹С…РѕРґ РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
+                EnterState(statusZombi);   // Р’С…РѕРґ РІ РЅРѕРІРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
                 previusStatus = statusZombi;
             }
         }
@@ -149,17 +149,13 @@ namespace FpsZomby {
         //---------------------------idle---------------Start and Update-----------------------------------------------------------------/////////////////////////////////////////
         private void StartIdle()
         {
-            // Логика для состояния idle
-
-
+            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ idle
             ZombyAgent.speed = 0f;
-
         }
 
         private void UpdateIdle()
         {
-            // Логика обновления для состояния idle
-
+            // Р›РѕРіРёРєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ idle
         }
 
 
@@ -172,7 +168,7 @@ namespace FpsZomby {
 
         private void StartRun()
         {
-            // Логика для состояния run
+            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ run
             foreach (GameObject zombie in activeZombies)
             {
                 if (zombie != null)
@@ -239,16 +235,13 @@ namespace FpsZomby {
 
         private void StartAttack()
         {
-            // Логика для состояния attack     
-
+            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ attack     
             animator.SetBool("isAttack", true);
-
         }
 
         private void UpdateAttack()
         {
-            // Логика обновления для состояния attack
-
+            // Р›РѕРіРёРєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ attack
             distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
 
 
@@ -281,11 +274,9 @@ namespace FpsZomby {
         //Start
         private void StartInjury()
         {
-            // Включаем анимацию ранения
+            // РџСЂРѕРІРµСЂРєР° Р°РЅРёРјР°С†РёРё СЂР°РЅРµРЅРёСЏ
             animator.SetBool("isHit", true);
-
-            ZombyAgent.speed = 0.1f; // Замедляем зомби
-                           
+            ZombyAgent.speed = 0.1f; // Р—Р°РјРµРґР»СЏРµРј Р·РѕРјР±Рё
         }
 
         //Update
@@ -296,7 +287,7 @@ namespace FpsZomby {
 
 
 
-        //Событие с StateZombiHit , Срабатывает в конце анимации
+        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ
         public void ZombyInjurnyEndAnimation()
         {
 
@@ -328,17 +319,11 @@ namespace FpsZomby {
 
         public void StartDead()
         {
-            // Логика для состояния Dead
-
-
+            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ Dead
             ZombyAgent.speed = 0f;
-
             this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-
             StartCoroutine(WaitClierBody());
-
             footDust.Stop();
-
         }
 
         public void UpdateDead()
@@ -352,10 +337,9 @@ namespace FpsZomby {
 
         public IEnumerator WaitClierBody()
         {
-            // Задержка 
+            // РћР¶РёРґР°РЅРёРµ 
             yield return new WaitForSeconds(bodyClearTime);
-
-            // Действие после задержки
+            // РЈРґР°Р»РµРЅРёРµ РїРѕСЃР»Рµ РѕР¶РёРґР°РЅРёСЏ
             Destroy(this.gameObject);
         }
 
@@ -376,33 +360,30 @@ namespace FpsZomby {
 
 
         //EXIT------------------------------------------------------------------------------------------------------------------------------------------
-        //Вписывать метод Выхода из состояния
+        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void ExitState(ZombiStatus state)
         {
             switch (state)
             {
                 case ZombiStatus.idle:
-                    Debug.Log("Выход из состояния: Idle");
+                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Idle");
                     break;
 
                 case ZombiStatus.run:
-                    Debug.Log("Выход из состояния: Run");
-
+                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Run");
                     animator.SetBool("isRun", false);
-
-
                     break;
 
                 case ZombiStatus.attack:
-                    Debug.Log("Выход из состояния: Attack");
+                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Attack");
                     break;
 
                 case ZombiStatus.injury:
-                    Debug.Log("Выход из состояния: Injury");
+                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Injury");
                     break;
 
                 case ZombiStatus.dead:
-                    Debug.Log("Выход из состояния: Dead");
+                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Dead");
                     break;
             }
         }
@@ -438,14 +419,12 @@ namespace FpsZomby {
 
 
 
-        //поподание в зомби
+        //РџРѕР»СѓС‡РµРЅРёРµ СѓСЂРѕРЅР°
         void DemageZombi(float demage, RaycastHit hit)
         {
+            shootZombi = hit.collider.gameObject;                   // GameObject shootZombi = Р·РѕРјР±Рё РІ РєРѕС‚РѕСЂРѕРіРѕ РїРѕРїР°Р»Рё;
 
-            shootZombi = hit.collider.gameObject;                   // GameObject shootZombi = Зомби в которого попали;
-
-
-            if (shootZombi == this.gameObject)                      //Добовляем зомби в массив лист
+            if (shootZombi == this.gameObject)                      //РџСЂРѕРІРµСЂСЏРµРј РїРѕРїР°Р» РІ РЅСѓР¶РЅС‹Р№ Р·РѕРјР±Рё
             {
                 if (!activeZombies.Contains(this.gameObject))
                 {
@@ -453,13 +432,9 @@ namespace FpsZomby {
                 }
             }
 
-
             if (shootZombi == this.gameObject)
             {
-
-
                 LifeZombi = LifeZombi - demage;
-
                 print("Hit " + LifeZombi);
 
                 if (LifeZombi > 0)
@@ -468,14 +443,10 @@ namespace FpsZomby {
                 }
                 else
                 {
-                    animator.SetTrigger("isDead");            // Убийство
-
+                    animator.SetTrigger("isDead");            // РђРЅРёРјР°С†РёСЏ
                     statusZombi = ZombiStatus.dead;
                 }
-
-
             }
-
         }
 
 
@@ -492,7 +463,7 @@ namespace FpsZomby {
 
 
 
-        //Вписывать метод Update состояния
+        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ Update СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void UpdateState()
         {
             switch (statusZombi)
@@ -522,33 +493,33 @@ namespace FpsZomby {
 
 
 
-        //Вписывать метод старта состояния
+        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС…РѕРґРѕРј СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void EnterState(ZombiStatus state)
         {
             switch (state)
             {
                 case ZombiStatus.idle:
-                    Debug.Log("Вход в состояние: Idle");
+                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Idle");
                     StartIdle();
                     break;
 
                 case ZombiStatus.run:
-                    Debug.Log("Вход в состояние: Run");
+                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Run");
                     StartRun();
                     break;
 
                 case ZombiStatus.attack:
-                    Debug.Log("Вход в состояние: Attack");
+                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Attack");
                     StartAttack();
                     break;
 
                 case ZombiStatus.injury:
-                    Debug.Log("Вход в состояние: Injury");
+                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Injury");
                     StartInjury();
                     break;
 
                 case ZombiStatus.dead:
-                    Debug.Log("Вход в состояние: Dead");
+                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Dead");
                     StartDead();
                     break;
             }

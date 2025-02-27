@@ -18,19 +18,19 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
     int myIndex = 3;
 
     float timer = 0;
-    float delay = 0.15f;  //Задержка между выстрелами
+    float delay = 0.15f;  //Р—Р°РґРµСЂР¶РєР° РјРµР¶РґСѓ РІС‹СЃС‚СЂРµР»Р°РјРё
     float nextFire;
-    float spread = 30f; //Разброс выстрела
-    static public int ammo = 30; //кол патронов    
-    int maxMagazine = 30;
-    int allammo;
+    float spread = 20f; //Р Р°Р·Р±СЂРѕСЃ РІС‹СЃС‚СЂРµР»РѕРІ
+    static public int ammo = 30; //РџР°С‚СЂРѕРЅС‹ РІ РѕР±РѕР№РјРµ   
+    int maxMagazine = 30;//РњР°С… РїР°С‚СЂРѕРЅРѕРІ 
+    int allammo;//РџР°С‚СЂРѕРЅС‹ РІ РіР»РѕР±Р°Р»СЊРЅРѕРј С…СЂР°РЅРёР»РёС‰Рµ
 
 
     CompositeDisposable _disposable = new();
 
     public void Enter()
     {
-        Debug.Log("Вход _ AK74");
+        Debug.Log("???? _ AK74");
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();
         SoundManager = GameObject.FindObjectOfType<SoundManager>();
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>();
@@ -67,7 +67,7 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
     public void Exit()
     {
-        Debug.Log("Выход _ AK74");
+        Debug.Log("????? _ AK74");
 
         animator.SetBool("AutoFire", false);
 
@@ -77,75 +77,79 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
     public void Update()
     {
-
-        // Выстрел вкл
+        // РћСЃРЅРѕРІРЅРѕР№ РєРѕРґ
         if (Input.GetMouseButtonDown(0) && ammo > 0) 
         {
             animator.SetBool("AutoFire", true);
-                   
-
         }
 
-        //Звук нет патронов
+        //Р—РІСѓРє РїСЂРё РІС‹СЃС‚СЂРµР»Рµ
         if (Input.GetMouseButtonDown(0) && ammo <= 0)
         {
-            
             SoundManager.noAmmoSound.Play();
-
         }
 
+        // РђРІС‚РѕРјР°С‚РёС‡РµСЃРєР°СЏ РїРµСЂРµР·Р°СЂСЏРґРєР° РїСЂРё РїСѓСЃС‚РѕРј РјР°РіР°Р·РёРЅРµ
+        if (ammo == 0 && allammo > 0 && !animator.GetBool("AutoFire"))
+        {
+            animator.SetTrigger("Reload");
+            SoundManager.ReloadAudio[2].Play();
 
-        // Перезарядка
+            // РџСЂРѕРІРµСЂСЏРµРј, С…РІР°С‚Р°РµС‚ Р»Рё РїР°С‚СЂРѕРЅРѕРІ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ maxMagazine
+            if (allammo > 0) // РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ Р»Рё РїР°С‚СЂРѕРЅС‹ РґР»СЏ РїРµСЂРµР·Р°СЂСЏРґРєРё
+            {
+                // РџСЂРѕРІРµСЂСЏРµРј, РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ Р»Рё РїР°С‚СЂРѕРЅРѕРІ РІ allammo РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ РґРѕ maxMagazine
+                int neededAmmo = Mathf.Min(maxMagazine - ammo, allammo);
+                ammo += neededAmmo; // Р”РѕР±Р°РІР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїР°С‚СЂРѕРЅС‹
+                allammo -= neededAmmo; // Р’С‹С‡РёС‚Р°РµРј РґРѕР±Р°РІР»РµРЅРЅС‹Рµ РїР°С‚СЂРѕРЅС‹ РёР· allammo
+            }
+            else
+            {
+                ammo += allammo; // Р”РѕР±Р°РІР»СЏРµРј РІСЃРµ РѕСЃС‚Р°РІС€РёРµСЃСЏ РїР°С‚СЂРѕРЅС‹
+                allammo = 0; // РћР±РЅСѓР»СЏРµРј allammo
+            }
+
+            // РћР±РЅРѕРІР»СЏРµРј РїР°С‚СЂРѕРЅС‹ РІ РёРЅС‚РµСЂС„РµР№СЃРµ РјР°РіР°Р·РёРЅР°
+            PlayerSwitchingStates.weaponBullets["AK74"] = allammo;
+            PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
+            ak47ammoSubject.OnNext(ammo); // РћР±РЅРѕРІР»СЏРµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°С‚СЂРѕРЅРѕРІ РІ РѕР±РѕР№РјРµ
+        }
+        // РџРµСЂРµР·Р°СЂСЏРґРєР° РїРѕ РєРЅРѕРїРєРµ R
         else if (Input.GetKeyDown(KeyCode.R) && ammo < 30 && animator.GetBool("AutoFire") == false && allammo != 0)
         {
-
             animator.SetTrigger("Reload");
             
             SoundManager.ReloadAudio[2].Play();
 
-            // Определяем, сколько патронов не хватает для достижения maxMagazine
-            int neededAmmo = maxMagazine - ammo;
-
-            if (allammo > 0) // Проверяем, есть ли патроны для перезарядки
+            // РџСЂРѕРІРµСЂСЏРµРј, С…РІР°С‚Р°РµС‚ Р»Рё РїР°С‚СЂРѕРЅРѕРІ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ maxMagazine
+            if (allammo > 0) // РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ Р»Рё РїР°С‚СЂРѕРЅС‹ РґР»СЏ РїРµСЂРµР·Р°СЂСЏРґРєРё
             {
-                // Проверяем, достаточно ли патронов в allammo для заполнения до maxMagazine
-                if (allammo >= neededAmmo)
-                {
-                    ammo += neededAmmo; // Добавляем недостающие патроны
-                    allammo -= neededAmmo; // Вычитаем добавленные патроны из allammo
-                }
-                else
-                {
-                    ammo += allammo; // Добавляем все оставшиеся патроны
-                    allammo = 0; // Обнуляем allammo
-                }
-
-                // Обновляем словарь и отправляем изменения
-                PlayerSwitchingStates.weaponBullets["AK74"] = allammo;
-                PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
-                ak47ammoSubject.OnNext(ammo); // Обновляем количество патронов в оружии
+                // РџСЂРѕРІРµСЂСЏРµРј, РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ Р»Рё РїР°С‚СЂРѕРЅРѕРІ РІ allammo РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ РґРѕ maxMagazine
+                int neededAmmo = Mathf.Min(maxMagazine - ammo, allammo);
+                ammo += neededAmmo; // Р”РѕР±Р°РІР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїР°С‚СЂРѕРЅС‹
+                allammo -= neededAmmo; // Р’С‹С‡РёС‚Р°РµРј РґРѕР±Р°РІР»РµРЅРЅС‹Рµ РїР°С‚СЂРѕРЅС‹ РёР· allammo
+            }
+            else
+            {
+                ammo += allammo; // Р”РѕР±Р°РІР»СЏРµРј РІСЃРµ РѕСЃС‚Р°РІС€РёРµСЃСЏ РїР°С‚СЂРѕРЅС‹
+                allammo = 0; // РћР±РЅСѓР»СЏРµРј allammo
             }
 
-
-            ak47ammoSubject.OnNext(ammo);
-
-           
+            // РћР±РЅРѕРІР»СЏРµРј РїР°С‚СЂРѕРЅС‹ РІ РёРЅС‚РµСЂС„РµР№СЃРµ РјР°РіР°Р·РёРЅР°
+            PlayerSwitchingStates.weaponBullets["AK74"] = allammo;
+            PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
+            ak47ammoSubject.OnNext(ammo); // РћР±РЅРѕРІР»СЏРµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°С‚СЂРѕРЅРѕРІ РІ РѕР±РѕР№РјРµ
         }
 
-        // Выстрел выкл2
+        // Р—РІСѓРєРѕРІРѕР№ РєР»РёРї2
         if (Input.GetMouseButtonUp(0) || ammo <= 0) 
         {
             animator.SetBool("AutoFire", false);
-
-           
-          
         }
-       
-
     }
 
-    //Событие выстрел в Update анимации    
-    // Событие выстрела! Для точной синхронной работы эффектов и действий
+    //Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ РІ Update Р°РЅРёРјР°С†РёРё
+    // Р’РЅРёРјР°РЅРёРµ РІРЅРёРјР°РЅРёРµ! Р­С‚Р° СЃС‚СЂРѕРєР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґРѕР»Р¶РЅР° РѕСЃС‚Р°С‚СЊСЃСЏ РІ Р°РЅРёРјР°С†РёРё
     public void FireWepon(PlayerSwitchingStates playerSwitching,SoundManager soundManager)
     {
 
@@ -162,29 +166,29 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
         
     }
 
-    // Действия и данные для выстрела
+    // Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ РІ Р°РЅРёРјР°С†РёРё
     void DataShoot(PlayerSwitchingStates playerSwitching, SoundManager SoundM)
     {
-        // Генерируем случайное значение pitch в диапазоне от 0.8 до 1.2
+        // Р“РµРЅРµСЂРёСЂСѓРµРј СЃР»СѓС‡Р°Р№РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ pitch РІ РґРёР°РїР°Р·РѕРЅРµ РѕС‚ 0.8 РґРѕ 1.2
         float randomPitch = Random.Range(0.9f, 1.25f);
 
-        // Устанавливаем pitch и воспроизводим звук выстрела с помощью PlayOneShot
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј pitch Рё РІРѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє РІС‹СЃС‚СЂРµР»Р° СЃ РїРѕРјРѕС‰СЊСЋ PlayOneShot
         SoundM.FireAudio[3].pitch = randomPitch;
         SoundM.FireAudio[3].PlayOneShot(SoundM.FireAudio[3].clip);
 
-        // Воспроизводим визуальные эффекты выстрела
-        playerSwitching.FireWeaponPart[2].Play();
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»РµРґСѓСЋС‰РµРµ РІСЂРµРјСЏ РІС‹СЃС‚СЂРµР»Р°
+        nextFire = Time.time + delay;
 
-        // Луч центра камеры
+        // Р›СѓС‡ РЅР°С€РµРіРѕ РїСЂРёС†РµР»Р°
         Ray ray = playerSwitching.RayCastCameraCenter();
 
-        // Пуля GameObject
+        // РќР°С€Рё GameObject
         GameObject bullet = playerSwitching.bullets;
 
-        // Луч выстрел разброс
+        // Р”Р»СЏ СЃРёСЃС‚РµРјС‹ СЃРѕР±С‹С‚РёР№
         playerSwitching.ShootInWall(playerSwitching.TraceShot(spread), bullet);
 
-        // Параметры луча в playerSwitching
+        // Р”РѕР±Р°РІР»СЏРµРј СЃРµР±СЏ РІ playerSwitching
         playerSwitching.rayWepon = playerSwitching.TraceShot(spread);
 
         ammo--;

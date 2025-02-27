@@ -8,9 +8,9 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
     Animator animator;   
     Player player;
     int myIndex = 1;
-    int spread = 10; //разброс выстрела
+    int spread = 10; //Р Р°Р·Р±СЂРѕСЃ РІС‹СЃС‚СЂРµР»РѕРІ
     float myDemage = 16;
-    static public int ammo = 12; //патроны  
+    static public int ammo = 12; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ  
     int allammo;
     int maxMagazine = 12;
     bool ExitTime = false;
@@ -27,7 +27,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Enter()
     {
-        Debug.Log("Вход _ Gun");      
+        Debug.Log("пїЅпїЅпїЅпїЅ _ Gun");      
 
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>(); 
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();                
@@ -37,7 +37,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
         animator.SetInteger("WeponNum", myIndex);        
 
-        gunIntSubject.OnNext(ammo); // Передача в канвас
+        gunIntSubject.OnNext(ammo); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
         switchState.Demage = myDemage;
 
@@ -53,7 +53,8 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
        
-
+    
+    
 
 
 
@@ -66,11 +67,11 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
         }).AddTo(_disposable);
 
 
-        // Создаем Observable для отслеживания нажатий клавиши R
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Observable пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ R
         Observable.EveryUpdate()
 
-            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // Проверяем условия            
-            .Subscribe(_ => Reload()) // Подписываемся на событие Нажатия R
+            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ            
+            .Subscribe(_ => Reload()) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ R
             .AddTo(_disposable);
 
 
@@ -91,7 +92,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Exit()
     {      
-        Debug.Log("Выход _ Gun");
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅ _ Gun");
 
         
        
@@ -102,7 +103,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Update()
     {
-        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // Тригер Выстрел
+        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
 
 
@@ -122,7 +123,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
 
-        //Если кончилась обоима то делаем перезарядку
+        //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (ammo == 0 && allammo != 0 && ExitTime == false)
         {
             Reload();
@@ -148,35 +149,35 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
     void FinishRelad()
     {
         ExitTime = false;
-        // Определяем, сколько патронов не хватает для достижения maxMagazine
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ maxMagazine
         int neededAmmo = maxMagazine - ammo;
 
-        if (allammo > 0) // Проверяем, есть ли патроны для перезарядки
+        if (allammo > 0) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
-            // Проверяем, достаточно ли патронов в allammo для заполнения до maxMagazine
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ allammo пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ maxMagazine
             if (allammo >= neededAmmo)
             {
-                ammo += neededAmmo; // Добавляем недостающие патроны
-                allammo -= neededAmmo; // Вычитаем добавленные патроны из allammo
+                ammo += neededAmmo; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                allammo -= neededAmmo; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ allammo
             }
             else
             {
-                ammo += allammo; // Добавляем все оставшиеся патроны
-                allammo = 0; // Обнуляем allammo
+                ammo += allammo; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                allammo = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ allammo
             }
 
-            // Обновляем словарь и отправляем изменения
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             PlayerSwitchingStates.weaponBullets["Gun"] = allammo;
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
-            gunIntSubject.OnNext(ammo); // Обновляем количест
+            gunIntSubject.OnNext(ammo); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
     }
 
     private bool IsReloading()
     {
-        // Получаем текущее состояние анимации
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        // Проверяем, соответствует ли текущее состояние "GunReload"
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "GunReload"
         return stateInfo.IsName("GunReload");
     }
 
@@ -184,22 +185,22 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
 
-    // Событие выстрела! Для точной синхронной работы эффектов и действий
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public void FireWepon(PlayerSwitchingStates playerSwitching, SoundManager soundManager)
     {
 
-        //звук и партиклы
+        //пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         soundManager.FireAudio[0].Play();
         playerSwitching.FireWeaponPart[0].Play();
 
-        //Пуля Gameobject
+        //пїЅпїЅпїЅпїЅ Gameobject
         GameObject bullet = playerSwitching.bullets;
 
-        //луч выстрел разброс
+        //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         playerSwitching.ShootInWall(playerSwitching.TraceShot(spread), bullet);
 
 
-        // Параметры луча в playerSwiching
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ playerSwiching
         playerSwitching.rayWepon = playerSwitching.TraceShot(spread);
 
      
