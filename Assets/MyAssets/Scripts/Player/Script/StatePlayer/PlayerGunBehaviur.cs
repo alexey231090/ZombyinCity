@@ -10,7 +10,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
     int myIndex = 1;
     int spread = 10; //Разброс выстрелов
     float myDemage = 16;
-    static public int ammo = 12; //�������  
+    static public int ammo = 12; //Патроны  
     int allammo;
     int maxMagazine = 12;
     bool ExitTime = false;
@@ -27,7 +27,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Enter()
     {
-        Debug.Log("���� _ Gun");      
+        Debug.Log("Вход _ Gun");      
 
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>(); 
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();                
@@ -37,7 +37,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
         animator.SetInteger("WeponNum", myIndex);        
 
-        gunIntSubject.OnNext(ammo); // �������� � ������
+        gunIntSubject.OnNext(ammo); // Отправка в патроны
 
         switchState.Demage = myDemage;
 
@@ -67,11 +67,11 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
         }).AddTo(_disposable);
 
 
-        // ������� Observable ��� ������������ ������� ������� R
+        // Создаем Observable для отслеживания нажатия клавиши R
         Observable.EveryUpdate()
 
-            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // ��������� �������            
-            .Subscribe(_ => Reload()) // ������������� �� ������� ������� R
+            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // Проверяем условия            
+            .Subscribe(_ => Reload()) // Подписываемся на нажатие клавиши R
             .AddTo(_disposable);
 
 
@@ -92,7 +92,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Exit()
     {      
-        Debug.Log("����� _ Gun");
+        Debug.Log("Выход _ Gun");
 
         
        
@@ -103,7 +103,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
     public void Update()
     {
-        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // ������ �������
+        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // Нажата клавиша
         {
 
 
@@ -123,7 +123,7 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
 
-        //���� ��������� ������ �� ������ �����������
+        //Если закончились патроны то оружие перезаряжается
         if (ammo == 0 && allammo != 0 && ExitTime == false)
         {
             Reload();
@@ -149,35 +149,35 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
     void FinishRelad()
     {
         ExitTime = false;
-        // ����������, ������� �������� �� ������� ��� ���������� maxMagazine
+        // Определяем, сколько патронов не хватает для достижения maxMagazine
         int neededAmmo = maxMagazine - ammo;
 
-        if (allammo > 0) // ���������, ���� �� ������� ��� �����������
+        if (allammo > 0) // Проверяем, есть ли патроны для перезарядки
         {
-            // ���������, ���������� �� �������� � allammo ��� ���������� �� maxMagazine
+            // Проверяем, достаточно ли патронов в allammo для заполнения до maxMagazine
             if (allammo >= neededAmmo)
             {
-                ammo += neededAmmo; // ��������� ����������� �������
-                allammo -= neededAmmo; // �������� ����������� ������� �� allammo
+                ammo += neededAmmo; // Добавляем необходимые патроны
+                allammo -= neededAmmo; // Вычитаем добавленные патроны из allammo
             }
             else
             {
-                ammo += allammo; // ��������� ��� ���������� �������
-                allammo = 0; // �������� allammo
+                ammo += allammo; // Добавляем все оставшиеся патроны
+                allammo = 0; // Обнуляем allammo
             }
 
-            // ��������� ������� � ���������� ���������
+            // Обновляем патроны в глобальном хранилище
             PlayerSwitchingStates.weaponBullets["Gun"] = allammo;
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
-            gunIntSubject.OnNext(ammo); // ��������� ��������
+            gunIntSubject.OnNext(ammo); // Обновляем значение
         }
     }
 
     private bool IsReloading()
     {
-        // �������� ������� ��������� ��������
+        // Получаем текущее состояние анимации
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        // ���������, ������������� �� ������� ��������� "GunReload"
+        // Проверяем, соответствует ли текущее состояние "GunReload"
         return stateInfo.IsName("GunReload");
     }
 
@@ -185,22 +185,22 @@ public class PlayerGunBehaviur : IPlayerBehaviour , IStateFire
 
 
 
-    // ������� ��������! ��� ������ ���������� ������ �������� � ��������
+    // Стрельба активная! При выборе следующего оружия анимация не работает
     public void FireWepon(PlayerSwitchingStates playerSwitching, SoundManager soundManager)
     {
 
-        //���� � ��������
+        //Звук и частицы
         soundManager.FireAudio[0].Play();
         playerSwitching.FireWeaponPart[0].Play();
 
-        //���� Gameobject
+        //Пуля Gameobject
         GameObject bullet = playerSwitching.bullets;
 
-        //��� ������� �������
+        //Луч выстрела стрельбы
         playerSwitching.ShootInWall(playerSwitching.TraceShot(spread), bullet);
 
 
-        // ��������� ���� � playerSwiching
+        // Сохраняем луч в playerSwiching
         playerSwitching.rayWepon = playerSwitching.TraceShot(spread);
 
      

@@ -392,33 +392,6 @@ namespace FpsZomby {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //Получение урона
         void DemageZombi(float demage, RaycastHit hit)
         {

@@ -13,9 +13,9 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
     Animator animator;
     Ray ray;
     private RaycastHit hit;
-    float spread = 5;  //Разброс
-    private bool hasFired = true;   //один удар
-    float crowBarDistance = 1.5f;   //Дистанция до стены
+    float spread = 5;  //Р Р°Р·Р±СЂРѕСЃ
+    private bool hasFired = true;   //Р¤Р»Р°Рі Р°С‚Р°РєРё
+    float crowBarDistance = 1.5f;   //Р”РёСЃС‚Р°РЅС†РёСЏ РґРѕ Р°С‚Р°РєРё
     int myDemage = 15;
 
     public static readonly Subject<int> crowIntSubject = new();
@@ -25,7 +25,7 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
     public void Enter()
     {
 
-        Debug.Log("Вход _ Crowbar");
+        Debug.Log("Р’С…РѕРґ _ Crowbar");
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>();
         player = GameObject.FindObjectOfType(typeof(Player)) as Player;
@@ -54,7 +54,7 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
 
     public void Exit()
     {
-        Debug.Log("Выход _ Crowbar");
+        Debug.Log("Р’С‹С…РѕРґ _ Crowbar");
 
     }
 
@@ -66,10 +66,10 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
     {
         ray = switchState.RayCastCameraCenter();
 
-        // Проверяем, попадает ли луч в объект
+        // РџСЂРѕРІРµСЂСЏРµРј, РїРѕРїР°РґР°РµС‚ Р»Рё Р»СѓС‡ РІ РѕР±СЉРµРєС‚
         if (Physics.Raycast(ray, out hit))
         {
-            // Получаем расстояние от начала луча до объекта
+            // РџРѕР»СѓС‡Р°РµРј СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РєР°РјРµСЂС‹ РїРѕРєР° РґРѕ РѕР±СЉРµРєС‚Р°
             float distance = hit.distance;
 
             if (hit.distance < crowBarDistance)
@@ -85,7 +85,7 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
         }
         else
         {
-            // Если луч не попал ни в один объект
+            // Р•СЃР»Рё Р»СѓС‡ РЅРµ РїРѕРїР°Р» РЅРё РІ РѕРґРёРЅ РѕР±СЉРµРєС‚
             animator.SetTrigger(CrowbarMiss);
             soundManager.FireAudio[5].Play();            
         }
@@ -99,7 +99,7 @@ public class PlayerCrowbarBehaviur : IPlayerBehaviour,IStateFire
 
             if (Physics.Raycast(ray, out hit))
             {
-                // Получаем расстояние от начала луча до объекта
+                // РџРѕР»СѓС‡Р°РµРј СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РєР°РјРµСЂС‹ РїРѕРєР° РґРѕ РѕР±СЉРµРєС‚Р°
                 float distance = hit.distance;
 
                 if (hit.distance < crowBarDistance)

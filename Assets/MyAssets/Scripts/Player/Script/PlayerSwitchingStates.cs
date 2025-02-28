@@ -24,6 +24,8 @@ public class PlayerSwitchingStates : MonoBehaviour
 
     public Animator hendAnim;
 
+   static public bool CrowbarIsActive,GunIsActive,BennelliIsActive,AK74IsActive = false;
+
     public enum Weapons
     {
         None,
@@ -42,7 +44,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
     public GameObject[] weponArray;   
 
-    public ParticleSystem[] FireWeaponPart; // Огонь от оружия
+    public ParticleSystem[] FireWeaponPart; // Particle effects for weapons
 
     public AudioSource[] FireGunAudio;
 
@@ -100,12 +102,12 @@ public class PlayerSwitchingStates : MonoBehaviour
         SelectWepon();
 
 
-        //Добавление в Словарь
+        // Initialize dictionary
         weaponBullets["Gun"] = 0;
         weaponBullets["Bennelli_M4"] = 0;
         weaponBullets["AK74"] = 0;
 
-        // Отправка словаря в Subject
+        // Send dictionary to Subject
         allBulletsDictSubject.OnNext(weaponBullets);
 
 
@@ -166,7 +168,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-        // Проверяем, движется ли игрок
+        // РџСЂРѕРІРµСЂСЏРµРј, РґРІРёРіР°РµС‚СЃСЏ Р»Рё РёРіСЂРѕРє
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 && isGround == true)
         {
 
@@ -225,23 +227,23 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-    //Звук шагов
+    // Р’РѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёРµ Р·РІСѓРєРѕРІ С€Р°РіРѕРІ
     private void PlayStepSound()
     {
         
         
          int currentStepIndex = 0;
 
-        if (!soundManager.stepsSource.isPlaying) // Проверяем, не играет ли звук в данный момент
+        if (!soundManager.stepsSource.isPlaying) // РџСЂРѕРІРµСЂСЏРµРј, РЅРµ РІРѕСЃРїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ Р»Рё СѓР¶Рµ Р·РІСѓРє
         {
-            soundManager.stepsSource.clip = soundManager.Steps[currentStepIndex]; // Устанавливаем текущий звук
-            soundManager.stepsSource.Play(); // Проигрываем звук
+            soundManager.stepsSource.clip = soundManager.Steps[currentStepIndex]; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСѓС‰РёР№ Р·РІСѓРє
+            soundManager.stepsSource.Play(); // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє
 
-            // Переходим к следующему звуку
+            // РџРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµРјСѓ Р·РІСѓРєСѓ
             currentStepIndex++;
             if (currentStepIndex >= soundManager.Steps.Length)
             {
-                currentStepIndex = 0; // Сбрасываем индекс, если достигнут конец массива
+                currentStepIndex = 0; // РЎР±СЂР°СЃС‹РІР°РµРј СЃС‡РµС‚С‡РёРє, РµСЃР»Рё РґРѕСЃС‚РёРіРЅСѓС‚ РєРѕРЅРµС† РјР°СЃСЃРёРІР°
             }
         }
     }
@@ -251,9 +253,9 @@ public class PlayerSwitchingStates : MonoBehaviour
 
     private void StopStepSound()
     {
-        if (soundManager.stepsSource.isPlaying) // Проверяем, играет ли звук
+        if (soundManager.stepsSource.isPlaying) // РџСЂРѕРІРµСЂСЏРµРј, РІРѕСЃРїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ Р»Рё Р·РІСѓРє
         {
-            soundManager.stepsSource.Stop(); // Останавливаем звук
+            soundManager.stepsSource.Stop(); // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р·РІСѓРє
         }
     }
 
@@ -271,7 +273,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-        //Пересечение коллайдера с слоем
+        // РџРѕРґРїРёСЃС‹РІР°РµРјСЃСЏ РЅР° СЃРѕР±С‹С‚РёСЏ С‚СЂРёРіРіРµСЂР° РґР»СЏ РїРѕРґР±РѕСЂР° РїР°С‚СЂРѕРЅРѕРІ
         trigger.OnTriggerEnterAsObservable().Where(t => t.gameObject.layer == LayerMask.NameToLayer("Bullets")).Subscribe(other =>
             {
 
@@ -281,17 +283,17 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-                // Проверка, существует ли ключ в словаре
+                // РџСЂРѕРІРµСЂСЏРµРј, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё РѕСЂСѓР¶РёРµ РІ СЃР»РѕРІР°СЂРµ
                 if (weaponBullets.ContainsKey(weapon))
                 {
-                    // Прибавляем количество пуль к текущему значению
+                    // Р”РѕР±Р°РІР»СЏРµРј РїР°С‚СЂРѕРЅС‹ Рє СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРјСѓ РєРѕР»РёС‡РµСЃС‚РІСѓ РѕСЂСѓР¶РёСЏ
                     weaponBullets[weapon] += bullets;
                 }
 
                 allBulletsDictSubject.OnNext(weaponBullets);
 
-                var delayedEventStream = Observable.Return(weaponBullets[weapon]) // Эмитируем событие
-                .Delay(System.TimeSpan.FromSeconds(1f)); // Задержка в 1 секунду
+                var delayedEventStream = Observable.Return(weaponBullets[weapon]) // РЎРѕР·РґР°РµРј СЃРѕР±С‹С‚РёРµ
+                .Delay(System.TimeSpan.FromSeconds(1f)); // Р—Р°РґРµСЂР¶РєР° 1 СЃРµРєСѓРЅРґР°
 
 
                 Destroy(other.gameObject);
@@ -320,7 +322,7 @@ public class PlayerSwitchingStates : MonoBehaviour
     { 
         playerLife -= 13;
 
-        soundManager.aScreamFromBlow.Play();//Звук от Player "Aauuf"
+        soundManager.aScreamFromBlow.Play();// Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє "РђР°СѓСѓС„" РёРіСЂРѕРєР°
 
         PlayerIsDead(playerLife);
 
@@ -340,14 +342,14 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             AnimatorIsDead.SetBool("isDead", true);
 
-            soundManager.aScreamFromBlow.Stop();//Стоп Звук от Player "Aauuf"
+            soundManager.aScreamFromBlow.Stop();// РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р·РІСѓРє "РђР°СѓСѓС„" РёРіСЂРѕРєР°
         }
     }
 
 
 
 
-    //Луч от центра камеры
+    // Р›СѓС‡ РёР· С†РµРЅС‚СЂР° РєР°РјРµСЂС‹
     public Ray RayCastCameraCenter()
     {
         Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
@@ -365,7 +367,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-    //Состояния
+    // Р’С‹Р±РѕСЂ РѕСЂСѓР¶РёСЏ
     void SelectWepon()
     {
 
@@ -373,11 +375,11 @@ public class PlayerSwitchingStates : MonoBehaviour
         {
 
 
-            // --------------------------------------------- Нет оружия
+            // --------------------------------------------- Р‘РµР· РѕСЂСѓР¶РёСЏ
             case Weapons.None:
 
 
-                print("Нет Оружия");
+                print("No weapon");
 
                 hendAnim.SetInteger("WeponNum", -1);
 
@@ -391,7 +393,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-            // --------------------------------------------- Выдерга
+            // --------------------------------------------- РњРѕРЅС‚РёСЂРѕРІРєР°
             case Weapons.Crowbar:
               
 
@@ -401,14 +403,14 @@ public class PlayerSwitchingStates : MonoBehaviour
                 break;
 
 
-            // -------------------------------------------- Пистолет 
+            // -------------------------------------------- РџРёСЃС‚РѕР»РµС‚
             case Weapons.Gun:
 
                 this.player.SetBehavior(player.SetBehaviourGun());
                 allBulletsDictSubject.OnNext(weaponBullets);
                 break;
 
-            // ---------------------------------------------- Дробовик
+            // ---------------------------------------------- Р”СЂРѕР±РѕРІРёРє
             case Weapons.Bennelli_M4:
 
                 this.player.SetBehavior(player.SetBehaviorBennelli());
@@ -417,7 +419,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
                 break;
 
-            // -------------------------------------------------- Ак74 
+            // -------------------------------------------------- РђРљ74
             case Weapons.AK74:
 
                 this.player.SetBehavior(player.SetBehaviorAk74());
@@ -445,7 +447,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-    // Смена оружия на цыфры
+    // РћР±СЂР°Р±РѕС‚РєР° РІРІРѕРґР° РѕСЂСѓР¶РёСЏ
     void InputWepon()
     {
         if (playerLife > 0)
@@ -463,7 +465,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
 
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1) && CrowbarIsActive)
             {
                 weapon = Weapons.Crowbar;
 
@@ -471,7 +473,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(KeyCode.Alpha2) && GunIsActive)
             {
 
                 weapon = Weapons.Gun;
@@ -480,7 +482,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3) && BennelliIsActive)
             {
 
 
@@ -490,7 +492,7 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKeyDown(KeyCode.Alpha4) && AK74IsActive)
             {
                 weapon = Weapons.AK74;
 
@@ -502,42 +504,40 @@ public class PlayerSwitchingStates : MonoBehaviour
 
    
 
-    // При поподании в стену / Обрабатываем поподание Луча
+    // РћР±СЂР°Р±РѕС‚РєР° СЃС‚СЂРµР»СЊР±С‹ РїРѕ СЃС‚РµРЅР°Рј/РѕР±РЅР°СЂСѓР¶РµРЅРёРµ СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№
     public void ShootInWall(Ray ray, GameObject bullet)
     {
-        // Настройки LayerMask для игнорирования слоёв при поподании
+        // РЎРѕР·РґР°РµРј LayerMask РґР»СЏ РёРіРЅРѕСЂРёСЂРѕРІР°РЅРёСЏ РѕРїСЂРµРґРµР»РµРЅРЅС‹С… СЃР»РѕРµРІ
         int playerLayer = LayerMask.NameToLayer("Player");
         int ammoLayer = LayerMask.NameToLayer("Bullets");
-        int colliderWall = LayerMask.NameToLayer("colliderWall");//колайдер невидемой стены 
+        int colliderWall = LayerMask.NameToLayer("colliderWall");// РЎР»РѕР№ РєРѕР»Р»РёР·РёРё СЃС‚РµРЅС‹
 
-        int layerMask = ~(1 << playerLayer | 1 << ammoLayer | 1 << colliderWall); // Инвертируем маску, чтобы игнорировать слои
+        int layerMask = ~(1 << playerLayer | 1 << ammoLayer | 1 << colliderWall); // РћР±СЉРµРґРёРЅСЏРµРј СЃР»РѕРё РґР»СЏ РёРіРЅРѕСЂРёСЂРѕРІР°РЅРёСЏ
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
         {
-            // Получаем нормаль поверхности, на которую попал луч
+            // РџРѕР»СѓС‡Р°РµРј РЅРѕСЂРјР°Р»СЊ РїРѕРІРµСЂС…РЅРѕСЃС‚Рё РІ С‚РѕС‡РєРµ РїРѕРїР°РґР°РЅРёСЏ
             Vector3 surfaceNormal = hit.normal;
 
-            // Вычисляем позицию для появления следа от пули
-            spawnPosition = hit.point + (surfaceNormal * 0.008f); // Чтобы след от пули не находился внутри стены
+            // Р’С‹С‡РёСЃР»СЏРµРј РїРѕР·РёС†РёСЋ РїРѕСЏРІР»РµРЅРёСЏ СЃ РЅРµР±РѕР»СЊС€РёРј СЃРјРµС‰РµРЅРёРµРј РѕС‚ РїРѕРІРµСЂС…РЅРѕСЃС‚Рё
+            spawnPosition = hit.point + (surfaceNormal * 0.008f); // РќРµР±РѕР»СЊС€РѕРµ СЃРјРµС‰РµРЅРёРµ РґР»СЏ РїСЂРµРґРѕС‚РІСЂР°С‰РµРЅРёСЏ z-fighting
 
-            // Вычисляем правильное направление (сторону Z) для объекта следа от пули
+            // Р’С‹С‡РёСЃР»СЏРµРј РїРѕРІРѕСЂРѕС‚ РЅР° РѕСЃРЅРѕРІРµ РЅРѕСЂРјР°Р»Рё РїРѕРІРµСЂС…РЅРѕСЃС‚Рё
             Vector3 spawnRotation = Quaternion.LookRotation(surfaceNormal) * Vector3.forward;
 
-            // Создаем след от пули в случайной позиции и с правильным направлением
+            // РЎРѕР·РґР°РµРј СЌС„С„РµРєС‚ РїСѓР»РµРІРѕРіРѕ РѕС‚РІРµСЂСЃС‚РёСЏ
 
-            //Момент выстрела
-
-            //Присваеваем обьект в который был выстрел
+            // РџСЂРѕРІРµСЂСЏРµРј СЃР»РѕР№ РѕР±СЉРµРєС‚Р° РїРѕРїР°РґР°РЅРёСЏ Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Zombi"))
             {
-                //Кровь
+                // Р­С„С„РµРєС‚ РєСЂРѕРІРё
                 HitGameObject = hit.collider.gameObject;
                 bullet = bulletBlood;
 
-                //Звук поподания в зомби
+                // Р—РІСѓРє РїРѕРїР°РґР°РЅРёСЏ
                 soundManager.onTarget.Play();
 
-                // Включение изображения через UniRx
+                // РџРѕРєР°Р·С‹РІР°РµРј РјР°СЂРєРµСЂ РїРѕРїР°РґР°РЅРёСЏ РёСЃРїРѕР»СЊР·СѓСЏ UniRx
                 OnTargetZombi.SetActive(true);
                 IDisposable disposable = Observable.Timer(TimeSpan.FromSeconds(0.3f))
                     .Subscribe(_ => OnTargetZombi.SetActive(false));
@@ -545,11 +545,11 @@ public class PlayerSwitchingStates : MonoBehaviour
 
             else
             {
-                //Камень
+                // Р­С„С„РµРєС‚ РєР°РјРЅСЏ
                 bullet = bulletStone;
             }
 
-            PlayerFire?.Invoke(Demage, hit); //поподание в зомби
+            PlayerFire?.Invoke(Demage, hit); // РЈРІРµРґРѕРјР»СЏРµРј РѕР± СѓСЂРѕРЅРµ
 
             GameObject bulletHole = Instantiate(bullet, spawnPosition, Quaternion.LookRotation(spawnRotation));
         }
@@ -616,5 +616,3 @@ public class PlayerSwitchingStates : MonoBehaviour
     }
 
 }
-
-
