@@ -7,10 +7,10 @@ public class UpWepon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //РџРѕРґРЅСЏР» РѕСЂСѓР¶РёРµ
+        //Поднял оружие
         PlayerSwitchingStates.weapon = Upweapon;
 
-        //РђРєС‚РёРІР°С†РёСЏ РѕСЂСѓР¶РёСЏ
+        //Активация оружия
         switch (Upweapon)
         {
             case PlayerSwitchingStates.Weapons.Crowbar:

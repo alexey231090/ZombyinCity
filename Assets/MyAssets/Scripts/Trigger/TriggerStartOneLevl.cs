@@ -12,4 +12,6 @@ public class TriggerStartOneLevl : MonoBehaviour
         SoundPeoplesPanic.Play();
         gameObject.SetActive(false);
     }
+
+    
 }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using System;
 namespace FpsZomby {
     public class Zombi : MonoBehaviour
     {
         [Inject]
         PlayerSwitchingStates Player;
 
+        public event Action ZombiInjury; // Instance-specific event
 
         public enum ZombiStatus { idle, run, attack, injury, dead }
         public ZombiStatus statusZombi;
@@ -16,7 +18,6 @@ namespace FpsZomby {
 
         private static List<GameObject> activeZombies = new List<GameObject>();
         private bool isRunning = false;
-
 
         Animator animator;
         NavMeshAgent ZombyAgent;
@@ -33,293 +34,163 @@ namespace FpsZomby {
 
         public float bodyClearTime = 30;
 
-        public ParticleSystem footDust;
+       
 
+        public ParticleSystem footDust;
 
         private void Awake()
         {
-
             animator = this.gameObject.GetComponentInChildren<Animator>();
-
             ZombyAgent = this.gameObject.GetComponent<NavMeshAgent>();
-
-            ;
         }
-
-
-
 
         private void Start()
         {
-            // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ РґР»СЏ РєР°Р¶РґРѕРіРѕ Р·РѕРјР±Рё
             previusStatus = statusZombi;
             EnterState(statusZombi);
-
-
-
-
-
-
-
         }
-
-
-
-
-
-        //-------------------------------------------------------------------------------------РћСЃРЅРѕРІРЅС‹Рµ СЃРѕР±С‹С‚РёСЏ--------------------------------------------------
 
         private void OnEnable()
         {
             PlayerSwitchingStates.PlayerFire += DemageZombi;
-
-            StateZombiHit.ZombiInjury += ZombyInjurnyEndAnimation;
-
+            StateZombiHit.ZombiInjury += ZombyInjurnyEndAnimation; // Subscribe to instance-specific event
             StateZombiAttack.ZombiAttack += OnZombiAttack;
         }
 
         private void OnDisable()
         {
             PlayerSwitchingStates.PlayerFire -= DemageZombi;
-
-            StateZombiHit.ZombiInjury -= ZombyInjurnyEndAnimation;
-
+            StateZombiHit.ZombiInjury -= ZombyInjurnyEndAnimation; // Unsubscribe from instance-specific event
             StateZombiAttack.ZombiAttack -= OnZombiAttack;
         }
-
-
-        //------------------------------------------------------------------------------------
-
-
-
-
 
         private void Update()
         {
             OnStateZombi();
-            UpdateState(); // Р’С‹Р·РѕРІ РјРµС‚РѕРґР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
-
-
+            UpdateState(); // Р'Вызов метода обновления для текущего состояния
 
             if (Input.GetKeyDown(KeyCode.T))
             {
-
                 statusZombi = ZombiStatus.run;
-
-
             }
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
 
         private void OnStateZombi()
         {
-            // Р•СЃР»Рё СЃРѕСЃС‚РѕСЏРЅРёРµ Р·РѕРјР±Рё РёР·РјРµРЅРёР»РѕСЃСЊ
+            // Если состояние зомби изменилось
             if (statusZombi != previusStatus)
             {
-                ExitState(previusStatus); // Р’С‹С…РѕРґ РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
-                EnterState(statusZombi);   // Р’С…РѕРґ РІ РЅРѕРІРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
+                ExitState(previusStatus); // Выход из предыдущего состояния
+                EnterState(statusZombi);   // Вход в новое состояние
                 previusStatus = statusZombi;
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        //---------------------------idle---------------Start and Update-----------------------------------------------------------------/////////////////////////////////////////
         private void StartIdle()
         {
-            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ idle
+            // Логика для состояния idle
             ZombyAgent.speed = 0f;
         }
 
         private void UpdateIdle()
         {
-            // Р›РѕРіРёРєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ idle
+            // Логика обновления для состояния idle
         }
-
-
-
-
-
-
-
-        //-----------------------------Run--------------------------------------------------------------------------///////////////////////////////////////////////////
 
         private void StartRun()
         {
-            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ run
-            foreach (GameObject zombie in activeZombies)
-            {
-                if (zombie != null)
-                {
-                    if (zombie == this.gameObject)
-                    {
-                        ZombyAgent.speed = 3;
-                        animator.SetBool("isRun", true);
-                        animator.SetBool("isAttack", false);
+            // Убедитесь, что зомби начинает бежать, даже если он не в списке activeZombies
+            ZombyAgent.speed = 3;
+            animator.SetBool("isRun", true);
+            animator.SetBool("isAttack", false);
 
+            isRunning = animator.GetBool("isRun");
 
-                        isRunning = animator.GetBool("isRun");
-
-                        footDust.Play();
-
-                    }
-                }
-            }
-
-
-
-
-
-
-
-
-
+            footDust.Play();
         }
-
 
         private void UpdateRun()
         {
-
             distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
 
-            if (isRunning)
+            if (statusZombi == ZombiStatus.run && isRunning)
             {
+                
                 ZombyAgent.SetDestination(Player.transform.position);
             }
+            
 
             if (distanceToPlayer < stoppingDistance)
             {
                 ZombyAgent.speed = 0;
-
                 statusZombi = ZombiStatus.attack;
                 print("Distance ------ " + stoppingDistance);
-
             }
             else
             {
                 ZombyAgent.speed = 3;
             }
-
         }
-
-
-
-
-
-
-
-
-        //-----------------------------------------Attack-------------------------------------------------------------------///////////////////////////////////////////////////
 
         private void StartAttack()
         {
-            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ attack     
+            // Логика для состояния attack     
             animator.SetBool("isAttack", true);
         }
 
         private void UpdateAttack()
         {
-            // Р›РѕРіРёРєР° РѕР±РЅРѕРІР»РµРЅРёСЏ РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ attack
+            // Логика обновления для состояния attack
             distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
-
 
             if (distanceToPlayer >= stoppingDistance && onAttack)
             {
-
                 animator.SetBool("isAttack", false);
                 statusZombi = ZombiStatus.run;
-
             }
-
-
-
-
         }
-
 
         void OnZombiAttack(bool onAttackZombi)
         {
             onAttack = onAttackZombi;
         }
 
-
-
-
-
-        //-----------------------------------------Injury-------------------------------------------------------------------///////////////////////////////////////////////////
-
-
-        //Start
         private void StartInjury()
         {
-            // РџСЂРѕРІРµСЂРєР° Р°РЅРёРјР°С†РёРё СЂР°РЅРµРЅРёСЏ
-            animator.SetBool("isHit", true);
-            ZombyAgent.speed = 0.1f; // Р—Р°РјРµРґР»СЏРµРј Р·РѕРјР±Рё
+            // Проверка анимации ранения
+            animator.SetBool("isHit", true);               
+            ZombyAgent.speed = 0.1f; // Замедляем зомби
         }
 
-        //Update
         private void UpdateInjury()
         {
-
+           
         }
 
-
-
-        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ
         public void ZombyInjurnyEndAnimation()
         {
-
+           
             animator.SetBool("isHit", false);
 
-
-
-
+            print(animator.GetBool("isHit"));
             ZombyAgent.speed = 3;
 
-
-
-
-            if (LifeZombi > 0)
+            if (shootZombi == this.gameObject) // Проверка, это тот же зомби в которого стреляли
             {
-                statusZombi = ZombiStatus.run;
-
+                if (LifeZombi > 0)
+                {
+                    statusZombi = ZombiStatus.run;
+                }
+                else
+                {
+                    ZombyAgent.speed = 0;
+                }
             }
-            else
-            {
-                ZombyAgent.speed = 0;
-            }
-
         }
-
-        //----------------------------------------------------Dead-------------------------------------------------------------------------------------////////////////////////////////
-
-
 
         public void StartDead()
         {
-            // Р›РѕРіРёРєР° РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ Dead
+            // Логика для состояния Dead
             ZombyAgent.speed = 0f;
             this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
             StartCoroutine(WaitClierBody());
@@ -331,84 +202,51 @@ namespace FpsZomby {
 
         }
 
-
-
-
-
         public IEnumerator WaitClierBody()
         {
-            // РћР¶РёРґР°РЅРёРµ 
+            // Ожидание 
             yield return new WaitForSeconds(bodyClearTime);
-            // РЈРґР°Р»РµРЅРёРµ РїРѕСЃР»Рµ РѕР¶РёРґР°РЅРёСЏ
+            // Удаление после ожидания
             Destroy(this.gameObject);
         }
 
-
-
-
-
-        //------------------------------------------------------------------------------///////////////
-
-
-
-
-
-
-
-
-
-
-
-        //EXIT------------------------------------------------------------------------------------------------------------------------------------------
-        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void ExitState(ZombiStatus state)
         {
             switch (state)
             {
                 case ZombiStatus.idle:
-                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Idle");
                     break;
 
                 case ZombiStatus.run:
-                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Run");
                     animator.SetBool("isRun", false);
                     break;
 
                 case ZombiStatus.attack:
-                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Attack");
                     break;
 
                 case ZombiStatus.injury:
-                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Injury");
                     break;
 
                 case ZombiStatus.dead:
-                    Debug.Log("Р’С‹С…РѕРґ РёР· СЃРѕСЃС‚РѕСЏРЅРёСЏ: Dead");
                     break;
             }
         }
 
-
-
-
-
-        //РџРѕР»СѓС‡РµРЅРёРµ СѓСЂРѕРЅР°
         void DemageZombi(float demage, RaycastHit hit)
         {
-            shootZombi = hit.collider.gameObject;                   // GameObject shootZombi = Р·РѕРјР±Рё РІ РєРѕС‚РѕСЂРѕРіРѕ РїРѕРїР°Р»Рё;
+            shootZombi = hit.collider.gameObject; // GameObject shootZombi = зомби в котором попали;
 
-            if (shootZombi == this.gameObject)                      //РџСЂРѕРІРµСЂСЏРµРј РїРѕРїР°Р» РІ РЅСѓР¶РЅС‹Р№ Р·РѕРјР±Рё
+            if (shootZombi == this.gameObject) // Проверяем, что попадание произошло в текущего зомби
             {
+                Debug.Log($"Зомби {this.gameObject.name} получил урон: {demage}");
+
                 if (!activeZombies.Contains(this.gameObject))
                 {
                     activeZombies.Add(this.gameObject);
                 }
-            }
 
-            if (shootZombi == this.gameObject)
-            {
-                LifeZombi = LifeZombi - demage;
-                print("Hit " + LifeZombi);
+                LifeZombi -= demage;
+                Debug.Log($"Оставшаяся жизнь зомби {this.gameObject.name}: {LifeZombi}");
 
                 if (LifeZombi > 0)
                 {
@@ -416,27 +254,16 @@ namespace FpsZomby {
                 }
                 else
                 {
-                    animator.SetTrigger("isDead");            // РђРЅРёРјР°С†РёСЏ
+                    animator.SetTrigger("isDead"); // Анимация смерти
                     statusZombi = ZombiStatus.dead;
                 }
             }
+            else
+            {
+                Debug.Log($"Зомби {this.gameObject.name} не получил урон, так как попадание произошло в другого зомби.");
+            }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ Update СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void UpdateState()
         {
             switch (statusZombi)
@@ -463,41 +290,35 @@ namespace FpsZomby {
             }
         }
 
-
-
-
-        //РЎРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂРµРґ РІС…РѕРґРѕРј СЃРѕСЃС‚РѕСЏРЅРёСЏ
         private void EnterState(ZombiStatus state)
         {
             switch (state)
             {
                 case ZombiStatus.idle:
-                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Idle");
+                    Debug.Log("Вход в состояние: Idle");
                     StartIdle();
                     break;
 
                 case ZombiStatus.run:
-                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Run");
+                    Debug.Log("Вход в состояние: Run");
                     StartRun();
                     break;
 
                 case ZombiStatus.attack:
-                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Attack");
+                    Debug.Log("Вход в состояние: Attack");
                     StartAttack();
                     break;
 
                 case ZombiStatus.injury:
-                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Injury");
+                    Debug.Log("Вход в состояние: Injury");
                     StartInjury();
                     break;
 
                 case ZombiStatus.dead:
-                    Debug.Log("Р’С…РѕРґ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ: Dead");
+                    Debug.Log("Вход в состояние: Dead");
                     StartDead();
                     break;
             }
         }
-
-
     }
 }
