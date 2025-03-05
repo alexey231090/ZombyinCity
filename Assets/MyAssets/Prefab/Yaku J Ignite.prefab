@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusZombi: 0
-  LifeZombi: 100
+  lifeZombi: 100
   bodyClearTime: 30
   footDust: {fileID: 8458015242051637215}
 --- !u!1 &1936432723649957938
@@ -454,8 +454,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936432723649957938}
-  m_LocalRotation: {x: 0.087444656, y: -0.009308843, z: 0.033981167, w: 0.99554616}
-  m_LocalPosition: {x: 0.007268857, y: 0.96726334, z: -0.09021227}
+  m_LocalRotation: {x: 0.08744465, y: -0.009308847, z: 0.033981167, w: 0.99554616}
+  m_LocalPosition: {x: 0.007293701, y: 0.96726334, z: -0.09020996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

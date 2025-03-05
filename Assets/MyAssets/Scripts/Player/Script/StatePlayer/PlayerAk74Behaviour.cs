@@ -83,6 +83,7 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
             animator.SetBool("AutoFire", true);
         }
 
+        
         //Звук при выстреле
         if (Input.GetMouseButtonDown(0) && ammo <= 0)
         {

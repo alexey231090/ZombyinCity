@@ -35,7 +35,7 @@ public class StateReload : StateMachineBehaviour
     {
 
         
-
+        
          hasExecuted = false; // Флаг для отслеживания выполнения
 
         playerSwitchingStates = FindObjectOfType<PlayerSwitchingStates>();
@@ -49,6 +49,7 @@ public class StateReload : StateMachineBehaviour
                
 
                 break;
+                
         }
     }
 
@@ -76,7 +77,7 @@ public class StateReload : StateMachineBehaviour
                         stateReload.Reload(playerSwitchingStates, animator); //Метод интерфейса
 
                     reloadBennelliSubject.OnNext(Unit.Default);
-
+                    
                         hasExecuted = true;
 
                 }

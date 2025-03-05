@@ -11,7 +11,7 @@ public class GateControll : MonoBehaviour
     public AudioSource music;
     public AudioSource birdsSound;
 
-
+    // Старт уровня, включение анимации открытия ворот
     private void OnTriggerEnter(Collider other)
     {
         animatorGate.SetBool("Open",true);

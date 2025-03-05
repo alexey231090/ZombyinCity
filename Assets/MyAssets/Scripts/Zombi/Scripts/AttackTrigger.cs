@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,6 +66,7 @@ namespace FpsZomby
                 if (other.CompareTag("Player"))
                 {
                     ActivateZombies(); // Активация зомби при входе игрока в триггер
+                    Destroy(gameObject); // Удаление объекта, на котором находится скрипт
                 }
             }
             catch (System.Exception e)
@@ -91,7 +91,11 @@ namespace FpsZomby
                     Zombi zombieComponent = zombieObject.GetComponent<Zombi>(); // Получаем компонент Zombi
                     if (zombieComponent != null)
                     {
-                        zombieComponent.statusZombi = Zombi.ZombiStatus.run; // Устанавливаем статус зомби на "бег"
+                        UnityEngine.AI.NavMeshAgent navMeshAgent = zombieObject.GetComponent<UnityEngine.AI.NavMeshAgent>(); // Получаем компонент NavMeshAgent
+                        if (navMeshAgent != null && navMeshAgent.enabled)
+                        {
+                            zombieComponent.statusZombi = Zombi.ZombiStatus.run; // Устанавливаем статус зомби на "бег"
+                        }
                     }
                 }
             }
@@ -101,12 +105,10 @@ namespace FpsZomby
             }
         }
 
-       
-
         public void AddZombie(GameObject zombie)
         {
             if (zombie == null) return; // Выход, если зомби null
-            
+
             if (zombieObjects == null)
             {
                 zombieObjects = new List<GameObject>(); // Инициализация списка зомби, если он null
