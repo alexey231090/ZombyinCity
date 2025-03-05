@@ -159,25 +159,28 @@ namespace FpsZomby {
             zombyAgent.speed = 0.1f; // Замедляем зомби           
         }
 
+        
         private void UpdateInjury()
         {
-            StartCoroutine(InjuryToRunCoroutine());
+            if (!IsInvoking(nameof(InjuryToRun)))
+            {
+                Invoke(nameof(InjuryToRun), 3f);
+            }
         }
 
-        private IEnumerator InjuryToRunCoroutine()
+        private void InjuryToRun()
         {
-            yield return new WaitForSeconds(3f);
             if (statusZombi == ZombiStatus.injury)
             {
                 statusZombi = ZombiStatus.run;
                 print("Start!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
         }
+        
 
         public void ZombyInjurnyEndAnimation()
         {
-            animator.SetBool("isHit", false);
-            Debug.Log(animator.GetBool("isHit"));
+            animator.SetBool("isHit", false);            
             zombyAgent.speed = 3;
 
             if (activeZombies.Contains(this.gameObject)) // Проверка, находится ли зомби в списке activeZombies

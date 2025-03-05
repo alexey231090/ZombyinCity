@@ -53,7 +53,7 @@ namespace FpsZomby
             }
             catch (System.Exception e)
             {
-                // Обработка исключений
+                Debug.Log("Ошибка AttackTrigger");
             }
         }
 
