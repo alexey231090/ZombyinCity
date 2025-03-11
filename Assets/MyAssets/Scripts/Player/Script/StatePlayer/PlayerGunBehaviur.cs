@@ -2,17 +2,17 @@ using UnityEngine;
 using FpsZomby;
 using UniRx;
 
+
 public class PlayerGunBehaviur : IPlayerBehaviour, IStateFire
 {
     Animator animator;
     Player player;
     int myIndex = 1;
-    int spread = 10; // Разброс выстрелов
+    int spread = 10; // Разброс пуль
     float myDemage = 16;
     static public int ammo = 12; // Патроны
     int allammo;
     int maxMagazine = 12;
-    bool isReloading = false;
 
     public static readonly Subject<int> gunIntSubject = new();
 
@@ -20,6 +20,8 @@ public class PlayerGunBehaviur : IPlayerBehaviour, IStateFire
     SoundManager soundmanager;
 
     CompositeDisposable _disposable = new();
+
+    private bool hasReloaded = false;// Флаг для отслеживания перезарядки
 
     public void Enter()
     {
@@ -33,121 +35,134 @@ public class PlayerGunBehaviur : IPlayerBehaviour, IStateFire
 
         animator.SetInteger("WeponNum", myIndex);
 
-        gunIntSubject.OnNext(ammo); // Отправка в патроны
+        gunIntSubject.OnNext(ammo); // Обновление количества патронов
 
         switchState.Demage = myDemage;
 
         soundmanager.SelectOther.Play();
 
-        SubscribeToSubjects();
-        SetupReloadObservable();
+        PlayerSwitchingStates.allBulletsDictSubject
+            .Subscribe(value =>
+            {
+                allammo = value["Gun"];
+            }).AddTo(_disposable);
+
+        StateReload.reloadGunSubject.Subscribe(value =>
+        {
+            FinishRelad();
+        }).AddTo(_disposable);
+
+        // Создание Observable для обработки нажатия клавиши R
+        Observable.EveryUpdate()
+            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0) // Проверка условий перезарядки
+            .Subscribe(_ => Reload()) // Выполнение перезарядки
+            .AddTo(_disposable);
+
+        PlayerSwitchingStates.isDead.Subscribe(x =>
+        {
+            animator.SetInteger("WeponNum", -1);
+        }).AddTo(_disposable);
     }
 
     public void Exit()
     {
         Debug.Log("Выход _ Gun");
-        _disposable.Dispose();
     }
 
     public void Update()
     {
-        HandleFireInput();
-        HandleReloadInput();
-    }
-
-    private void HandleFireInput()
-    {
-        if (Input.GetMouseButtonDown(0) && ammo > 0 && !isReloading)
+        if (Input.GetMouseButtonDown(0) && ammo > 0 && IsReloading() == false) // Выстрел
         {
             animator.SetTrigger("OnFire");
         }
-        else if (Input.GetMouseButtonDown(0) && ammo <= 0 && !isReloading)
+
+        if (Input.GetMouseButtonDown(0) && ammo <= 0 && IsReloading() == false)
         {
             soundmanager.noAmmoSound.Play();
         }
-    }
 
-    private void HandleReloadInput()
-    {
-        if (ammo == 0 && allammo != 0 && !isReloading)
-        {
-            Reload();
-        }
+        CheckAndReload();
     }
 
     private void Reload()
     {
-        if (isReloading) return;
-
-        soundmanager.ReloadAudio[0].Play();
         animator.SetBool("ReloadBool", true);
-        isReloading = true;
+        soundmanager.ReloadAudio[0].Play();
+
+        
     }
 
-    private void FinishRelad()
+
+
+
+
+    void FinishRelad()
     {
-        isReloading = false;
+        // Определение количества патронов, необходимых для полной перезарядки
         int neededAmmo = maxMagazine - ammo;
 
-        if (allammo > 0)
+        if (allammo > 0) // Проверка наличия патронов для перезарядки
         {
+            // Проверка, достаточно ли патронов в запасе для полной перезарядки
             if (allammo >= neededAmmo)
             {
-                ammo += neededAmmo;
-                allammo -= neededAmmo;
+                ammo += neededAmmo; // Добавление патронов в магазин
+                allammo -= neededAmmo; // Уменьшение количества патронов в запасе
             }
             else
             {
-                ammo += allammo;
-                allammo = 0;
+                ammo += allammo; // Добавление всех оставшихся патронов в магазин
+                allammo = 0; // Обнуление запаса патронов
             }
 
+            // Обновление данных о патронах
             PlayerSwitchingStates.weaponBullets["Gun"] = allammo;
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
-            gunIntSubject.OnNext(ammo);
+            gunIntSubject.OnNext(ammo); // Обновление количества патронов
+            hasReloaded = false;
         }
     }
 
     private bool IsReloading()
     {
+        // Проверка состояния анимации перезарядки
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        // Проверка, выполняется ли анимация "GunReload"
         return stateInfo.IsName("GunReload");
     }
 
+    // Метод для стрельбы. Этот метод вызывается анимацией
     public void FireWepon(PlayerSwitchingStates playerSwitching, SoundManager soundManager)
     {
+        // Звук выстрела
         soundManager.FireAudio[0].Play();
         playerSwitching.FireWeaponPart[0].Play();
 
+        // Создание объекта пули
         GameObject bullet = playerSwitching.bullets;
+
+        // Трассировка выстрела
         playerSwitching.ShootInWall(playerSwitching.TraceShot(spread), bullet);
 
+        // Обновление данных о выстреле
         playerSwitching.rayWepon = playerSwitching.TraceShot(spread);
 
         ammo--;
+
         gunIntSubject.OnNext(ammo);
     }
+    
 
-    private void SubscribeToSubjects()
+   
+
+    private void CheckAndReload()
     {
-        PlayerSwitchingStates.allBulletsDictSubject
-            .Subscribe(value => { allammo = value["Gun"]; })
-            .AddTo(_disposable);
-
-        StateReload.reloadGunSubject
-            .Subscribe(_ => FinishRelad())
-            .AddTo(_disposable);
-
-        PlayerSwitchingStates.isDead
-            .Subscribe(_ => animator.SetInteger("WeponNum", -1))
-            .AddTo(_disposable);
-    }
-
-    private void SetupReloadObservable()
-    {
-        Observable.EveryUpdate()
-            .Where(_ => Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo != 0)
-            .Subscribe(_ => Reload())
-            .AddTo(_disposable);
+        if (ammo == 0 && allammo > 0 && !hasReloaded)
+        {
+            Reload();
+            hasReloaded = true;
+        }
     }
 }
+
+

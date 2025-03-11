@@ -20,7 +20,6 @@ public class StateReload : StateMachineBehaviour
         Bennelli,
         Ak74
     }
-    int reloadInt = 0;
 
     public Wepon wepon;
 
@@ -86,9 +85,11 @@ public class StateReload : StateMachineBehaviour
             case Wepon.Gun:
 
 
-                if (stateInfo.normalizedTime >= 0.8f )
+                if (stateInfo.normalizedTime >= 0.8f)
                 {
-                    reloadGunSubject.OnNext(Unit.Default);
+                    
+                        reloadGunSubject.OnNext(Unit.Default);                                    
+
                 }
 
 
@@ -103,6 +104,7 @@ public class StateReload : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("ReloadBool", false);// отключаем переход к анимации перезарядки
+       
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

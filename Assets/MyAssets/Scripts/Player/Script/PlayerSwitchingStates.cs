@@ -302,6 +302,7 @@ public class PlayerSwitchingStates : MonoBehaviour
             {
                 weapon = Weapons.Bennelli_M4;
                 selectWepon.OnNext(weapon.ToString());
+                Debug.Log(weapon+"------------------!!!!!!!!true");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha4) && AK74IsActive)

@@ -15,6 +15,8 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
     Animator animator;
 
+    static ParticleSystem partAk74;
+
     int myIndex = 3;
 
     float timer = 0;
@@ -24,13 +26,13 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
     static public int ammo = 30; //Патроны в обойме   
     int maxMagazine = 30;//Мах патронов 
     int allammo;//Патроны в глобальном хранилище
-
+    
 
     CompositeDisposable _disposable = new();
 
     public void Enter()
     {
-        Debug.Log("???? _ AK74");
+        Debug.Log("Enter _ AK74");
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();
         SoundManager = GameObject.FindObjectOfType<SoundManager>();
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>();
@@ -45,6 +47,11 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
         SoundManager.SelectOther.Play();
 
+        switchState.Demage = 20;
+
+        partAk74 = GameObject.FindGameObjectWithTag("Ak74").GetComponent<ParticleSystem>();
+
+        
 
 
         PlayerSwitchingStates.allBulletsDictSubject.Subscribe(value =>
@@ -67,7 +74,7 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
     public void Exit()
     {
-        Debug.Log("????? _ AK74");
+        Debug.Log("Exit _ AK74");
 
         animator.SetBool("AutoFire", false);
 
@@ -81,6 +88,8 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
         if (Input.GetMouseButtonDown(0) && ammo > 0) 
         {
             animator.SetBool("AutoFire", true);
+
+           
         }
 
         
@@ -161,15 +170,22 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
             nextFire = Time.time + delay;
             DataShoot(playerSwitching,soundManager);
+            
 
         }
 
         
     }
 
+
+    
+
     // Вызываем функцию в анимации
     void DataShoot(PlayerSwitchingStates playerSwitching, SoundManager SoundM)
     {
+
+        PlayerAk74Behaviour.partAk74.Play();
+
         // Генерируем случайное значение pitch в диапазоне от 0.8 до 1.2
         float randomPitch = Random.Range(0.9f, 1.25f);
 
