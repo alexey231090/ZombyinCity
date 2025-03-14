@@ -51,7 +51,7 @@ public class PlayerAk74Behaviour : IPlayerBehaviour,IStateFire
 
         partAk74 = GameObject.FindGameObjectWithTag("Ak74").GetComponent<ParticleSystem>();
 
-        
+            
 
 
         PlayerSwitchingStates.allBulletsDictSubject.Subscribe(value =>
