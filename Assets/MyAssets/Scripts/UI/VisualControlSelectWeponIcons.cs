@@ -22,6 +22,7 @@ namespace FpsZomby
             UpdateWeaponIcons();
         }
 
+        //Обновление иконок оружия
         private void UpdateWeaponIcons()
         {
             for (int i = 0; i < selectIcons.Length; i++)
@@ -79,6 +80,7 @@ namespace FpsZomby
             }
         }
 
+        //Установка прозрачности иконки
         private void SetIconTransparency(GameObject icon, int alpha)
         {
             Image image = icon.GetComponent<Image>();

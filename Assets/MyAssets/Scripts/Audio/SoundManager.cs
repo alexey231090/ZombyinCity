@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource aScreamFromBlow;
     public AudioSource noAmmoSound;
     public AudioSource onTarget;
+    public AudioSource backGroundMusic;
 
 
 

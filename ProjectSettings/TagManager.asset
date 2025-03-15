@@ -16,6 +16,8 @@ TagManager:
   - Zombi
   - Ladder
   - Fire
+  - DeadPanel
+  - ButtonRestart
   layers:
   - Default
   - TransparentFX

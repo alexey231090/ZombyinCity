@@ -11,57 +11,61 @@ using UnityEngine.UI;
 
 
 public class PlayerSwitchingStates : MonoBehaviour
-{
-    public float Demage = 0;
-    public static event Action<float, RaycastHit> PlayerFire;
-    public static int playerLife = 100;
-
-    private readonly int allBullets = 0;
-    public Animator AnimatorIsDead;
-    public Animator hendAnim;
-
-    public static bool CrowbarIsActive, GunIsActive, BennelliIsActive, AK74IsActive = false;
-
-    public enum Weapons
     {
-        None,
-        Crowbar,
-        Gun,
-        Bennelli_M4,
-        AK74
-    }
+        public float Demage = 0;
+        public static event Action<float, RaycastHit> PlayerFire;
+        public static int playerLife = 100;                           
 
-    public static Weapons weapon;
-    private Weapons previousWeapon;
+        private readonly int allBullets = 0;
+        public Animator AnimatorIsDead;
+        public Animator hendAnim;
 
-    public Player player;
-    public GameObject[] weponArray;
-    public ParticleSystem[] FireWeaponPart; // Эффекты частиц для оружия
-    public AudioSource[] FireGunAudio;
-    public new Camera camera;
+        public static bool CrowbarIsActive, GunIsActive, BennelliIsActive, AK74IsActive = false;
 
-    Vector3 spawnPosition;
-    public GameObject bullets;
-    public GameObject bulletBlood;
-    public GameObject bulletStone;
-    public GameObject HitGameObject;
-    public Ray rayWepon;
+        GameObject deadPanel;
+       [SerializeField] GameObject buttonRestart;
 
-    CompositeDisposable _disposable = new CompositeDisposable();
-    public Collider trigger;
-    public static readonly Subject<int> lifeIntSubject = new();
-    public static Dictionary<string, int> weaponBullets = new();
-    public static Subject<Dictionary<string, int>> allBulletsDictSubject = new();
-    public static Subject<Unit> isDead = new();
-    public static Subject<string> selectWepon = new();
+        public enum Weapons
+        {
+            None,
+            Crowbar,
+            Gun,
+            Bennelli_M4,
+            AK74
+        }
 
-    [Inject]
-    SoundManager soundManager;
+        public static Weapons weapon;
+        private Weapons previousWeapon;
 
-    bool isGround = true;
-    bool isDown = false;
-    PlayerController playerController;
-    public GameObject OnTargetZombi;
+        public Player player;
+        public GameObject[] weponArray;
+        public ParticleSystem[] FireWeaponPart; // Эффекты частиц для оружия
+        public AudioSource[] FireGunAudio;
+        public new Camera camera;
+
+        Vector3 spawnPosition;
+        public GameObject bullets;
+        public GameObject bulletBlood;
+        public GameObject bulletStone;
+        public GameObject HitGameObject;
+        public Ray rayWepon;
+
+        CompositeDisposable _disposable = new CompositeDisposable();
+        public Collider trigger;
+        public static readonly Subject<int> lifeIntSubject = new();
+        public static Dictionary<string, int> weaponBullets = new();
+        public static Subject<Dictionary<string, int>> allBulletsDictSubject = new();
+        public static Subject<Unit> isDead = new();
+        public static Subject<string> selectWepon = new();
+
+        [Inject]
+        SoundManager soundManager;
+
+        bool isGround = true;
+        bool isDown = false;
+        PlayerController playerController;
+        public GameObject OnTargetZombi;
+        
 
     private void Start()
     {
@@ -70,156 +74,160 @@ public class PlayerSwitchingStates : MonoBehaviour
         playerLife = 100;
         lifeIntSubject.OnNext(playerLife);
         previousWeapon = weapon;
+        deadPanel = GameObject.FindGameObjectWithTag("DeadPanel");
+        
+    
         SelectWepon();
 
-        // Инициализация словаря
-        weaponBullets["Gun"] = 0;
-        weaponBullets["Bennelli_M4"] = 0;
-        weaponBullets["AK74"] = 0;
+            // Инициализация словаря
+            weaponBullets["Gun"] = 0;
+            weaponBullets["Bennelli_M4"] = 0;
+            weaponBullets["AK74"] = 0;
 
-        // Отправляем словарь в Subject
-        allBulletsDictSubject.OnNext(weaponBullets);
+            // Отправляем словарь в Subject
+            allBulletsDictSubject.OnNext(weaponBullets);
 
-        SubscribeToPlayerController();
-    }
-
-    private void Update()
-    {
-        if (weapon != previousWeapon)
-        {
-            SelectWepon();
-            previousWeapon = weapon;
+            SubscribeToPlayerController();
         }
 
-        InputWepon();
-        HandleMovementSound();
-    }
-
-    private void OnEnable()
-    {
-        StateZombiAttack.ZombiEndAttack += ZombiAttack;
-
-        // Подписываемся на события триггера для подбора патронов
-        trigger.OnTriggerEnterAsObservable()
-            .Where(t => t.gameObject.layer == LayerMask.NameToLayer("Bullets"))
-            .Subscribe(other =>
+        private void Update()
+        {
+            if (weapon != previousWeapon)
             {
-                int bullets = other.gameObject.GetComponent<BulletsTeam>().quantity;
-                string weapon = other.gameObject.GetComponent<BulletsTeam>().weaponsBullets.ToString();
+                SelectWepon();
+                previousWeapon = weapon;
+            }
 
-                // Проверяем, существует ли оружие в словаре
-                if (weaponBullets.ContainsKey(weapon))
+            InputWepon();
+            HandleMovementSound();
+        }
+
+        private void OnEnable()
+        {
+            StateZombiAttack.ZombiEndAttack += ZombiAttack;
+
+            // Подписываемся на события триггера для подбора патронов
+            trigger.OnTriggerEnterAsObservable()
+                .Where(t => t.gameObject.layer == LayerMask.NameToLayer("Bullets"))
+                .Subscribe(other =>
                 {
-                    // Добавляем патроны к существующему количеству оружия
-                    weaponBullets[weapon] += bullets;
-                }
+                    int bullets = other.gameObject.GetComponent<BulletsTeam>().quantity;
+                    string weapon = other.gameObject.GetComponent<BulletsTeam>().weaponsBullets.ToString();
 
-                allBulletsDictSubject.OnNext(weaponBullets);
+                    // Проверяем, существует ли оружие в словаре
+                    if (weaponBullets.ContainsKey(weapon))
+                    {
+                        // Добавляем патроны к существующему количеству оружия
+                        weaponBullets[weapon] += bullets;
+                    }
 
-                Destroy(other.gameObject);
-                soundManager.UppAmmo.Play();
+                    allBulletsDictSubject.OnNext(weaponBullets);
+
+                    Destroy(other.gameObject);
+                    soundManager.UppAmmo.Play();
+                }).AddTo(_disposable);
+        }
+
+        private void OnDisable()
+        {
+            StateZombiAttack.ZombiEndAttack -= ZombiAttack;
+            _disposable.Dispose();
+        }
+
+
+        // Подписка на события PlayerController
+        private void SubscribeToPlayerController()
+        {
+            PlayerController.isGround.Subscribe(value =>
+            {
+                isGround = value;
+                JumpSound(isGround);
             }).AddTo(_disposable);
-    }
 
-    private void OnDisable()
-    {
-        StateZombiAttack.ZombiEndAttack -= ZombiAttack;
-        _disposable.Dispose();
-    }
-
-
-    // Подписка на события PlayerController
-    private void SubscribeToPlayerController()
-    {
-        PlayerController.isGround.Subscribe(value =>
-        {
-            isGround = value;
-            JumpSound(isGround);
-        }).AddTo(_disposable);
-
-        PlayerController.isRun.Subscribe(value =>
-        {
-            WalcingPitchAudio(value, soundManager.stepsSource);
-        }).AddTo(_disposable);
-
-        PlayerController.isDown.Subscribe(value =>
-        {
-            isDown = value;
-        }).AddTo(_disposable);
-    }
-
-
-    // Обработка звука шагов
-    private void HandleMovementSound()
-    {
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && isGround)
-        {
-            if (!isDown)
+            PlayerController.isRun.Subscribe(value =>
             {
-                PlayStepSound();
+                WalcingPitchAudio(value, soundManager.stepsSource);
+            }).AddTo(_disposable);
+
+            PlayerController.isDown.Subscribe(value =>
+            {
+                isDown = value;
+            }).AddTo(_disposable);
+        }
+
+
+        // Обработка звука шагов
+        private void HandleMovementSound()
+        {
+            if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && isGround)
+            {
+                if (!isDown)
+                {
+                    PlayStepSound();
+                }
+            }
+            else
+            {
+                StopStepSound();
             }
         }
-        else
+
+
+        // Звук прыжка
+        private void JumpSound(bool isGround)
         {
-            StopStepSound();
-        }
-    }
-
-
-    // Звук прыжка
-    private void JumpSound(bool isGround)
-    {
-        if (isGround)
-        {
-            soundManager.JumpSurce[0].Play();
-        }
-    }
-
-    // Изменения питч звука шагов
-    public void WalcingPitchAudio(bool run, AudioSource stepsSurce)
-    {
-        stepsSurce.pitch = run ? 1.16f : 1f;
-    }
-
-
-    // Проигрывание звука шагов
-    private void PlayStepSound()
-    {
-        int currentStepIndex = 0;
-
-        if (!soundManager.stepsSource.isPlaying)
-        {
-            soundManager.stepsSource.clip = soundManager.Steps[currentStepIndex];
-            soundManager.stepsSource.Play();
-
-            currentStepIndex++;
-            if (currentStepIndex >= soundManager.Steps.Length)
+            if (isGround)
             {
-                currentStepIndex = 0;
+                soundManager.JumpSurce[0].Play();
             }
         }
-    }
 
-    // Остановка звука шагов
-    private void StopStepSound()
-    {
-        if (soundManager.stepsSource.isPlaying)
+        // Изменения питч звука шагов
+        public void WalcingPitchAudio(bool run, AudioSource stepsSurce)
         {
-            soundManager.stepsSource.Stop();
+            stepsSurce.pitch = run ? 1.16f : 1f;
         }
-    }
-
-    // Атака зомби
-    private void ZombiAttack()
-    {
-        playerLife -= 13;
-        soundManager.aScreamFromBlow.Play();
-        PlayerIsDead(playerLife);
-        lifeIntSubject.OnNext(playerLife);
-    }
 
 
-    // Проверка жизни игрока
+        // Проигрывание звука шагов
+        private void PlayStepSound()
+        {
+            int currentStepIndex = 0;
+
+            if (!soundManager.stepsSource.isPlaying)
+            {
+                soundManager.stepsSource.clip = soundManager.Steps[currentStepIndex];
+                soundManager.stepsSource.Play();
+
+                currentStepIndex++;
+                if (currentStepIndex >= soundManager.Steps.Length)
+                {
+                    currentStepIndex = 0;
+                }
+            }
+        }
+
+        // Остановка звука шагов
+        private void StopStepSound()
+        {
+            if (soundManager.stepsSource.isPlaying)
+            {
+                soundManager.stepsSource.Stop();
+            }
+        }
+
+        // Атака зомби
+        private void ZombiAttack()
+        {
+            playerLife -= 13;
+            soundManager.aScreamFromBlow.Play();
+            PlayerIsDead(playerLife);
+            lifeIntSubject.OnNext(playerLife);
+        }
+
+
+
+    //----------------------------------------------------После смерти игрока----------------------------------------------------
     private void PlayerIsDead(int playerLife)
     {
         if (playerLife < 0)
@@ -228,150 +236,182 @@ public class PlayerSwitchingStates : MonoBehaviour
             playerController.enabled = false;
             AnimatorIsDead.SetBool("isDead", true);
             soundManager.aScreamFromBlow.Stop();
+            soundManager.noAmmoSound.Stop();
+            soundManager.onTarget.Stop();
+            soundManager.backGroundMusic.Stop();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
+            buttonRestart.SetActive(true);
+
+            StartCoroutine(FadeInDeadPanel());
         }
     }
+    private bool isDeadPanelFaded = false;
 
-    // Луч из центра камеры
-    public Ray RayCastCameraCenter()
+    //Панель затемнения при смерти игрока
+    private IEnumerator FadeInDeadPanel()
     {
-        return camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-    }
+        if (isDeadPanelFaded) yield break;
 
-    // Выбор оружия
-    private void SelectWepon()
-    {
-        switch (weapon)
+        isDeadPanelFaded = true;
+        Image image = deadPanel.GetComponent<Image>();
+        float duration = 3f;
+        float elapsedTime = 0f;
+        Color color = image.color;
+
+        while (elapsedTime < duration)
         {
-            case Weapons.None:
-                hendAnim.SetInteger("WeponNum", -1);
-                foreach (GameObject wepon in weponArray)
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsedTime / duration);
+            image.color = color;
+            yield return null;
+        }
+    }
+    //-----------------------------------------------------------------------------------------------------------------------------------
+        // Луч из центра камеры
+        public Ray RayCastCameraCenter()
+        {
+            return camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        }
+
+        // Выбор оружия
+        private void SelectWepon()
+        {
+            switch (weapon)
+            {
+                case Weapons.None:
+                    hendAnim.SetInteger("WeponNum", -1);
+                    foreach (GameObject wepon in weponArray)
+                    {
+                        wepon.SetActive(false);
+                    }
+                    break;
+
+                case Weapons.Crowbar:
+                    player.SetBehavior(player.SetBehaviourCrowbar());
+                    allBulletsDictSubject.OnNext(weaponBullets);
+                    break;
+
+                case Weapons.Gun:
+                    player.SetBehavior(player.SetBehaviourGun());
+                    allBulletsDictSubject.OnNext(weaponBullets);
+                    break;
+
+                case Weapons.Bennelli_M4:
+                    player.SetBehavior(player.SetBehaviorBennelli());
+                    allBulletsDictSubject.OnNext(weaponBullets);
+                    break;
+
+                case Weapons.AK74:
+                    player.SetBehavior(player.SetBehaviorAk74());
+                    allBulletsDictSubject.OnNext(weaponBullets);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Обработка ввода оружия
+        private void InputWepon()
+        {
+            if (playerLife > 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha0))
                 {
-                    wepon.SetActive(false);
+                    weapon = Weapons.None;
+                    selectWepon.OnNext(weapon.ToString());
                 }
-                break;
 
-            case Weapons.Crowbar:
-                player.SetBehavior(player.SetBehaviourCrowbar());
-                allBulletsDictSubject.OnNext(weaponBullets);
-                break;
+                if (Input.GetKeyDown(KeyCode.Alpha1) && CrowbarIsActive)
+                {
+                    weapon = Weapons.Crowbar;
+                    selectWepon.OnNext(weapon.ToString());
+                }
 
-            case Weapons.Gun:
-                player.SetBehavior(player.SetBehaviourGun());
-                allBulletsDictSubject.OnNext(weaponBullets);
-                break;
+                if (Input.GetKeyDown(KeyCode.Alpha2) && GunIsActive)
+                {
+                    weapon = Weapons.Gun;
+                    selectWepon.OnNext(weapon.ToString());
+                }
 
-            case Weapons.Bennelli_M4:
-                player.SetBehavior(player.SetBehaviorBennelli());
-                allBulletsDictSubject.OnNext(weaponBullets);
-                break;
+                if (Input.GetKeyDown(KeyCode.Alpha3) && BennelliIsActive)
+                {
+                    weapon = Weapons.Bennelli_M4;
+                    selectWepon.OnNext(weapon.ToString());
+                    Debug.Log(weapon + "------------------!!!!!!!!true");
+                }
 
-            case Weapons.AK74:
-                player.SetBehavior(player.SetBehaviorAk74());
-                allBulletsDictSubject.OnNext(weaponBullets);
-                break;
-
-            default:
-                break;
+                if (Input.GetKeyDown(KeyCode.Alpha4) && AK74IsActive)
+                {
+                    weapon = Weapons.AK74;
+                    selectWepon.OnNext(weapon.ToString());
+                }
+            }
         }
-    }
 
-    // Обработка ввода оружия
-    private void InputWepon()
-    {
-        if (playerLife > 0)
+        // Обработка стрельбы по стенам/обнаружение столкновений
+        public void ShootInWall(Ray ray, GameObject bullet)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                weapon = Weapons.None;
-                selectWepon.OnNext(weapon.ToString());
-            }
+            int playerLayer = LayerMask.NameToLayer("Player");
+            int ammoLayer = LayerMask.NameToLayer("Bullets");
+            int colliderWall = LayerMask.NameToLayer("colliderWall");
 
-            if (Input.GetKeyDown(KeyCode.Alpha1) && CrowbarIsActive)
-            {
-                weapon = Weapons.Crowbar;
-                selectWepon.OnNext(weapon.ToString());
-            }
+            int layerMask = ~(1 << playerLayer | 1 << ammoLayer | 1 << colliderWall);
 
-            if (Input.GetKeyDown(KeyCode.Alpha2) && GunIsActive)
-            {
-                weapon = Weapons.Gun;
-                selectWepon.OnNext(weapon.ToString());
-            }
 
-            if (Input.GetKeyDown(KeyCode.Alpha3) && BennelliIsActive)
+            // Проверка столкновения луча с объектом
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
             {
-                weapon = Weapons.Bennelli_M4;
-                selectWepon.OnNext(weapon.ToString());
-                Debug.Log(weapon+"------------------!!!!!!!!true");
-            }
+                Vector3 surfaceNormal = hit.normal;
+                spawnPosition = hit.point + (surfaceNormal * 0.008f);
+                Vector3 spawnRotation = Quaternion.LookRotation(surfaceNormal) * Vector3.forward;
 
-            if (Input.GetKeyDown(KeyCode.Alpha4) && AK74IsActive)
-            {
-                weapon = Weapons.AK74;
-                selectWepon.OnNext(weapon.ToString());
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Zombi"))
+                {
+                    HitGameObject = hit.collider.gameObject;
+                    bullet = bulletBlood;
+                    soundManager.onTarget.Play();
+
+                    OnTargetZombi.SetActive(true);
+                    Observable.Timer(TimeSpan.FromSeconds(0.3f))
+                        .Subscribe(_ => OnTargetZombi.SetActive(false))
+                        .AddTo(_disposable);
+                }
+                else
+                {
+                    bullet = bulletStone;
+                }
+
+                // Вызов события стрельбы
+                PlayerFire?.Invoke(Demage, hit);
+                Instantiate(bullet, spawnPosition, Quaternion.LookRotation(spawnRotation));
             }
         }
-    }
 
-    // Обработка стрельбы по стенам/обнаружение столкновений
-    public void ShootInWall(Ray ray, GameObject bullet)
-    {
-        int playerLayer = LayerMask.NameToLayer("Player");
-        int ammoLayer = LayerMask.NameToLayer("Bullets");
-        int colliderWall = LayerMask.NameToLayer("colliderWall");
-
-        int layerMask = ~(1 << playerLayer | 1 << ammoLayer | 1 << colliderWall);
-
-
-        // Проверка столкновения луча с объектом
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
+        // Создание луча с разбросом
+        public Ray TraceShot(float radius)
         {
-            Vector3 surfaceNormal = hit.normal;
-            spawnPosition = hit.point + (surfaceNormal * 0.008f);
-            Vector3 spawnRotation = Quaternion.LookRotation(surfaceNormal) * Vector3.forward;
-
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Zombi"))
-            {
-                HitGameObject = hit.collider.gameObject;
-                bullet = bulletBlood;
-                soundManager.onTarget.Play();
-
-                OnTargetZombi.SetActive(true);
-                Observable.Timer(TimeSpan.FromSeconds(0.3f))
-                    .Subscribe(_ => OnTargetZombi.SetActive(false))
-                    .AddTo(_disposable);
-            }
-            else
-            {
-                bullet = bulletStone;
-            }
-
-            // Вызов события стрельбы
-            PlayerFire?.Invoke(Demage, hit);
-            Instantiate(bullet, spawnPosition, Quaternion.LookRotation(spawnRotation));
+            Vector2 randomOffset = Random.insideUnitCircle * radius;
+            return camera.ScreenPointToRay(new Vector3(Screen.width / 2 + randomOffset.x, Screen.height / 2 + randomOffset.y, 0));
         }
-    }
 
-    // Создание луча с разбросом
-    public Ray TraceShot(float radius)
-    {
-        Vector2 randomOffset = Random.insideUnitCircle * radius;
-        return camera.ScreenPointToRay(new Vector3(Screen.width / 2 + randomOffset.x, Screen.height / 2 + randomOffset.y, 0));
-    }
-
-    // Задержка выполнения действия
-    private IEnumerator Delay(Action action, float delay)
-    {
-        while (true)
+        // Задержка выполнения действия
+        private IEnumerator Delay(Action action, float delay)
         {
-            yield return new WaitForSeconds(delay);
-            action?.Invoke();
+            while (true)
+            {
+                yield return new WaitForSeconds(delay);
+                action?.Invoke();
+            }
+        }
+
+        // Запуск действия с задержкой
+        public void ShootDelay(Action function, float delay)
+        {
+            StartCoroutine(Delay(function, delay));
         }
     }
 
-    // Запуск действия с задержкой
-    public void ShootDelay(Action function, float delay)
-    {
-        StartCoroutine(Delay(function, delay));
-    }
-}
