@@ -1852,6 +1852,7 @@ MonoBehaviour:
   aScreamFromBlow: {fileID: 356800223217566446}
   noAmmoSound: {fileID: 554172267}
   onTarget: {fileID: 2055553900}
+  backGroundMusic: {fileID: 0}
 --- !u!1 &356800223915960380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3540,6 +3541,7 @@ MonoBehaviour:
   Demage: 0
   AnimatorIsDead: {fileID: 356800222678475519}
   hendAnim: {fileID: 4143213242522393536}
+  buttonRestart: {fileID: 0}
   player: {fileID: 356800223507251517}
   weponArray:
   - {fileID: 356800223602309917}
