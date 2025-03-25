@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2074977062913852265, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_Name
-      value: Zomby (1)
+      value: Zomby(1.15)
       objectReference: {fileID: 0}
     - target: {fileID: 2074977062913852266, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_BaseOffset
@@ -21,15 +21,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074977062913852279, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 352.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2074977062913852279, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.56
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 2074977062913852279, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 277.17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2074977062913852279, guid: 727eece5c7fc83444a0f4471b83163c2, type: 3}
       propertyPath: m_LocalRotation.w
