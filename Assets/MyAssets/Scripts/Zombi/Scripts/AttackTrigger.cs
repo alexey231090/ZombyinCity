@@ -5,6 +5,15 @@ namespace FpsZomby
 {
     public class AttackTrigger : MonoBehaviour
     {
+        public enum TriggerType
+        {
+            Zombi,
+            Player,
+            OldTrigger
+        }
+
+        [SerializeField] private TriggerType triggerType; // Тип триггера
+        [SerializeField] private int triggerIndex; // Индекс триггера
         [SerializeField] private List<GameObject> zombieObjects = new List<GameObject>(); // Список объектов зомби
         private bool isInitialized = false; // Флаг инициализации
 
@@ -21,6 +30,7 @@ namespace FpsZomby
             }
         }
 
+        // Инициализация компонентов
         private void InitializeComponents()
         {
             try
@@ -49,11 +59,24 @@ namespace FpsZomby
                     zombieObjects = new List<GameObject>(); // Инициализация списка зомби, если он null
                 }
 
+                if (triggerType == TriggerType.Zombi)
+                {
+                    // Добавляем все объекты с тегом "Zombi" в список, если они находятся в триггере
+                    Collider[] colliders = Physics.OverlapBox(triggerCollider.bounds.center, triggerCollider.bounds.extents, triggerCollider.transform.rotation);
+                    foreach (Collider col in colliders)
+                    {
+                        if (col.gameObject.layer == LayerMask.NameToLayer("Zombi") && !zombieObjects.Contains(col.gameObject))
+                        {
+                            zombieObjects.Add(col.gameObject);
+                        }
+                    }
+                }
+
                 isInitialized = true; // Устанавливаем флаг инициализации
             }
             catch (System.Exception e)
             {
-                Debug.Log("Ошибка AttackTrigger");
+                Debug.Log("Ошибка AttackTrigger: " + e.Message);
             }
         }
 
@@ -63,9 +86,18 @@ namespace FpsZomby
 
             try
             {
-                if (other.CompareTag("Player"))
+                if (triggerType == TriggerType.Player && other.CompareTag("Player"))
                 {
                     ActivateZombies(); // Активация зомби при входе игрока в триггер
+                    Destroy(gameObject); // Удаление объекта, на котором находится скрипт
+                }
+                else if (triggerType == TriggerType.Zombi && other.CompareTag("Player"))
+                {
+                    Destroy(gameObject); // Удаление объекта, на котором находится скрипт
+                }
+                else if (triggerType == TriggerType.OldTrigger && other.CompareTag("Player"))
+                {
+                    ActivateOldZombies(); // Активация зомби по старому методу
                     Destroy(gameObject); // Удаление объекта, на котором находится скрипт
                 }
             }
@@ -76,6 +108,41 @@ namespace FpsZomby
         }
 
         private void ActivateZombies()
+        {
+            try
+            {
+                // Найти все объекты с компонентом AttackTrigger
+                AttackTrigger[] allTriggers = FindObjectsOfType<AttackTrigger>();
+                foreach (AttackTrigger trigger in allTriggers)
+                {
+                    // Найти триггер с типом Zombi и таким же индексом
+                    if (trigger.triggerType == TriggerType.Zombi && trigger.triggerIndex == triggerIndex)
+                    {
+                        // Активировать зомби из списка этого триггера
+                        foreach (GameObject zombieObject in trigger.zombieObjects)
+                        {
+                            if (zombieObject == null) continue; // Пропуск, если объект зомби null
+
+                            Zombi zombieComponent = zombieObject.GetComponent<Zombi>(); // Получаем компонент Zombi
+                            if (zombieComponent != null)
+                            {
+                                UnityEngine.AI.NavMeshAgent navMeshAgent = zombieObject.GetComponent<UnityEngine.AI.NavMeshAgent>(); // Получаем компонент NavMeshAgent
+                                if (navMeshAgent != null && navMeshAgent.enabled)
+                                {
+                                    zombieComponent.statusZombi = Zombi.ZombiStatus.run; // Устанавливаем статус зомби на "бег"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                // Обработка исключений
+            }
+        }
+
+        private void ActivateOldZombies()
         {
             try
             {
