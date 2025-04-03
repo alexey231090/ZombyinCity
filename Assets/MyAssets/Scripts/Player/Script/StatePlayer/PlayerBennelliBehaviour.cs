@@ -1,6 +1,7 @@
 using UnityEngine;
 using FpsZomby;
 using UniRx;
+using System;
 
 public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 {
@@ -41,7 +42,10 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 
         soundManager.SelectOther.Play();
 
+        // Отправить количество пуль в аниматор
+        animator.SetInteger("AllAmmoBennelli", allammo);
 
+        // Отправить количество пуль в Словарь
         PlayerSwitchingStates.allBulletsDictSubject.Subscribe(value =>
         {
 
@@ -49,7 +53,7 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 
         }).AddTo(_disposable);
 
-
+        
         StateReload.reloadBennelliSubject.Subscribe(value =>
         {
             SoundReload();
@@ -91,26 +95,24 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
         }
 
         // Перезарядка
-        if (Input.GetKeyDown(KeyCode.R) && ammo < 8 && allammo != 0) 
+        if (Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo > 0)
         {
-
-
-
-
-            animator.SetTrigger("Reload");
-
-
+            animator.SetBool("ReloadBool",true);
+            //Задержка bool для переключения анимации
+            Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ => animator.SetBool("ReloadBool", false)).AddTo(_disposable);
             bennelliIntSubject.OnNext(ammo);
-
-
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
-
+            
+            Debug.Log(allammo);
         }
-        // Если перезарядка равна 0
-        else if(ammo == 0 && allammo != 0)
-        {
-            animator.SetTrigger("Reload");
 
+        
+
+        // Если магазин равен 0
+        else if(ammo == 0 && allammo != 0 && animator.GetBool("ReloadBool") == false)
+        {
+            animator.SetBool("ReloadBool", true);
+            Observable.Timer(TimeSpan.FromSeconds(1f)).Subscribe(_ => animator.SetBool("ReloadBool", false)).AddTo(_disposable);
 
             bennelliIntSubject.OnNext(ammo);
 

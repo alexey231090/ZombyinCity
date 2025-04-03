@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1519156134973681519}
   m_Layer: 7
   m_Name: Ammo_Ak74
-  m_TagString: Ak74
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee5fe0902999d54e9403e346ad9054f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantity: 30
+  quantity: 20
   weaponsBullets: 2
 --- !u!1001 &1932931979984167802
 PrefabInstance:

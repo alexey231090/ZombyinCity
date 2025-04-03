@@ -117,7 +117,7 @@ public class PlayerSwitchingStates : MonoBehaviour
                     // Проверяем, существует ли оружие в словаре
                     if (weaponBullets.ContainsKey(weapon))
                     {
-                        // Добавляем патроны к существующему количеству оружия
+                        // Добавляем патроны к существующему количеству патронов у оружия
                         weaponBullets[weapon] += bullets;
                     }
 
@@ -341,7 +341,7 @@ public class PlayerSwitchingStates : MonoBehaviour
                 {
                     weapon = Weapons.Bennelli_M4;
                     selectWepon.OnNext(weapon.ToString());
-                    Debug.Log(weapon + "------------------!!!!!!!!true");
+                    Debug.Log(weapon.ToString());
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha4) && AK74IsActive)

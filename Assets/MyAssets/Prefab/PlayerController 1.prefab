@@ -2294,6 +2294,7 @@ MonoBehaviour:
   aScreamFromBlow: {fileID: 5750214663803501540}
   noAmmoSound: {fileID: 5422129634719417953}
   onTarget: {fileID: 5422129633452849766}
+  backGroundMusic: {fileID: 0}
 --- !u!1 &5750214663437572769
 GameObject:
   m_ObjectHideFlags: 0
@@ -4037,7 +4038,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 255
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -4186,7 +4187,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8095861370253662815}
-  m_LocalRotation: {x: -0, y: 0.70499945, z: -0, w: -0.70920783}
+  m_LocalRotation: {x: 0, y: 0.70499957, z: -0, w: -0.7092077}
   m_LocalPosition: {x: 380.5, y: 7.03, z: 273.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4314,6 +4315,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Demage: 0
   AnimatorIsDead: {fileID: 5750214664337349621}
+  hendAnim: {fileID: 8232826765914661578}
+  buttonRestart: {fileID: 0}
   player: {fileID: 5750214663555528759}
   weponArray:
   - {fileID: 5750214663582138903}
@@ -9225,6 +9228,10 @@ PrefabInstance:
     - target: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+      propertyPath: m_TagString
+      value: Ak74
       objectReference: {fileID: 0}
     - target: {fileID: 4000011227296186, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
       propertyPath: m_RootOrder
