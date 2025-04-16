@@ -2,19 +2,24 @@ using UnityEngine;
 using FpsZomby;
 using UniRx;
 using System;
+using Zenject;
 
 public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 {
 
     Animator animator;
-    PlayerSwitchingStates switchState;    
+    PlayerSwitchingStates switchState;
+
+    
     SoundManager soundManager;
+
     int myIndex = 2;   
     int spread = 70; // Разброс
     static int ammo = 4; // Патроны в магазине
     float myDemage = 15;
     static int allammo;
     int maxMagazine = 8; // Максимальное количество патронов
+    
     
 
    public static readonly Subject<int> bennelliIntSubject = new();
@@ -26,11 +31,21 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
     {
         Debug.Log("Enter _ Bennelli");
 
-
+       
 
         animator = GameObject.FindGameObjectWithTag("Hand").GetComponent<Animator>();
         switchState = GameObject.FindObjectOfType<PlayerSwitchingStates>();
         soundManager = GameObject.FindObjectOfType<SoundManager>();
+
+        PlayerSwitchingStates.allBulletsDictSubject.Subscribe(value =>
+        {
+            if (value.ContainsKey("Bennelli_M4"))
+            {
+                allammo = value["Bennelli_M4"];
+                Debug.Log("Подписка активна " + allammo);
+            }
+        }).AddTo(_disposable);
+
 
         bennelliIntSubject.OnNext(ammo);
 
@@ -129,8 +144,11 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
 
     void SoundReload()
     {
-        soundManager.ReloadAudio[1].Play();
-
+       if(soundManager != null)
+        {
+            soundManager.ReloadAudio[1].Play();
+        }
+            
     }
 
     // Стрельба из оружия! Этот метод вызывается из аниматора

@@ -3,7 +3,7 @@ using System.Collections;
 
 
 namespace FpsZomby { 
-  public class VoicePause : MonoBehaviour
+ class VoicePause : MonoBehaviour
     {
         Zombi zombie;
         public AudioSource voiceSound; // Ссылка на AudioSource
@@ -28,12 +28,17 @@ namespace FpsZomby {
             {
                 StartCoroutine(PlaySoundWithPause());
             }
+            // Останавливаем звук, если статус зомби Dead
+            if (zombie.statusZombi == Zombi.ZombiStatus.dead && voiceSound.isPlaying)
+            {
+                voiceSound.Stop();
+            }
         }
 
         private IEnumerator PlaySoundWithPause()
         {
             isCoroutineRunning = true;
-            while(zombie.statusZombi != Zombi.ZombiStatus.dead) // Проверяем статус зомби
+            while (zombie.statusZombi != Zombi.ZombiStatus.dead) // Проверяем статус зомби
             {
                 // Воспроизводим звук
                 voiceSound.Play();

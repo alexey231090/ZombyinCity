@@ -110,7 +110,7 @@ namespace FpsZomby {
         private void UpdateRun()
         {
             distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
-
+            
             
             if (statusZombi == ZombiStatus.run)
             {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UniRx;
+using Zenject;
 
 
 
@@ -11,7 +12,10 @@ public class StateReload : StateMachineBehaviour
     public static readonly Subject<Unit> reloadGunSubject = new();
     public static readonly Subject<Unit> reloadBennelliSubject = new();
 
+
+    [Inject]
     PlayerSwitchingStates playerSwitchingStates;
+
     public enum Wepon
     {
         None,
@@ -36,8 +40,6 @@ public class StateReload : StateMachineBehaviour
         
         
          hasExecuted = false; // Флаг для отслеживания выполнения
-
-        playerSwitchingStates = FindObjectOfType<PlayerSwitchingStates>();
 
         switch (wepon)
         {
@@ -75,6 +77,7 @@ public class StateReload : StateMachineBehaviour
 
                         stateReload.Reload(playerSwitchingStates, animator); //Метод интерфейса
 
+                    
                     reloadBennelliSubject.OnNext(Unit.Default);
                     
                         hasExecuted = true;

@@ -3458,7 +3458,7 @@ MonoBehaviour:
   walkingSpeed: 3
   CroughSpeed: 1
   RuningSpeed: 6.5
-  jumpSpeed: 7.3
+  jumpSpeed: 4.3
   lookSpeed: 2
   lookXLimit: 85
   RunningFOV: 70

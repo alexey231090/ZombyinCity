@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class GateControll : MonoBehaviour
 {
@@ -14,16 +15,20 @@ public class GateControll : MonoBehaviour
     // Старт уровня, включение анимации открытия ворот
     private void OnTriggerEnter(Collider other)
     {
-        animatorGate.SetBool("Open",true);
-        helicopterAnim.SetBool("Fly",true);
+        animatorGate.SetBool("Open", true);
+
+        // Задержка в 1 секунду перед включением анимации вертолета
+        Observable.Timer(System.TimeSpan.FromSeconds(1)).Subscribe(_ =>
+        {
+            helicopterFly.Play();
+            helicopterAnim.SetBool("Fly", true); 
+            Destroy(this.gameObject); 
+
+        }).AddTo(this);
 
         openDoor.Play();
-        helicopterFly.Play();
         music.Play();
         birdsSound.Stop();
-
-        Destroy(this.gameObject);
-
-        
+        helicopterAnim.SetBool("Fly", true);
     }
 }

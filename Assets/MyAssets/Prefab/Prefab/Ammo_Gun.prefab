@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8987212515430110445}
   - component: {fileID: 6190481529752978865}
   - component: {fileID: 7655746354699052810}
+  - component: {fileID: 706066507}
   m_Layer: 7
   m_Name: Ammo_Gun
   m_TagString: Gun
@@ -104,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee5fe0902999d54e9403e346ad9054f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantity: 40
+  quantity: 33
   weaponsBullets: 0
 --- !u!65 &7655746354699052810
 BoxCollider:
@@ -119,6 +120,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.472, y: 0.226, z: 0.21999991}
   m_Center: {x: 0, y: 0.113, z: -0.0079104}
+--- !u!114 &706066507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242958245109309489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfe3cc8b0e2c5f49941ee98ec2a0d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &552978173833613050
 PrefabInstance:
   m_ObjectHideFlags: 0

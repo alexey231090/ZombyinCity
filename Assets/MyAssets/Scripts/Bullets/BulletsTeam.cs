@@ -1,11 +1,9 @@
 using UnityEngine;
-using Zenject;
 
 public class BulletsTeam : MonoBehaviour
 {
 
-    [Inject]
-    CanvasFirstPerson playerSwitch;
+    
 
     public enum BulletWeapons
     {
@@ -20,10 +18,5 @@ public class BulletsTeam : MonoBehaviour
 
     [SerializeField] public BulletWeapons weaponsBullets;
 
-    // Метод, который выполняется перед удалением
-    private void OnDestroy()
-    {
-        // Ваш код здесь
-        Debug.Log("Объект BulletsTeam будет удален");
-    }
+    
 }

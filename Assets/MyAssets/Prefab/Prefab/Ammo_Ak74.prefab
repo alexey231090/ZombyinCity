@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7045683670481663140}
   - component: {fileID: 4728270706718412943}
   - component: {fileID: 1519156134973681519}
+  - component: {fileID: 8508457715580967004}
   m_Layer: 7
   m_Name: Ammo_Ak74
   m_TagString: Untagged
@@ -228,6 +229,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantity: 32
   weaponsBullets: 2
+--- !u!114 &8508457715580967004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8789792800436011128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfe3cc8b0e2c5f49941ee98ec2a0d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1932931979984167802
 PrefabInstance:
   m_ObjectHideFlags: 0

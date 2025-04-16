@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 namespace FpsZomby
 {
@@ -10,6 +11,8 @@ namespace FpsZomby
         [SerializeField] private GameObject[] WeponsIcon;
         [SerializeField] private GameObject[] selectIcons;
         PlayerSwitchingStates switchingStates;
+
+        CompositeDisposable _disposable = new();
 
         private void Start()
         {
@@ -90,6 +93,28 @@ namespace FpsZomby
                 color.a = alpha / 255f;
                 image.color = color;
             }
+        }
+    
+
+
+    private void OnEnable()
+        {
+
+            // Подписываемся на событие активации иконок оружия
+            __StartLevel.IconActivateWepons.Subscribe(index =>
+        {
+                        
+                WeponsIcon[index].SetActive(true);
+            
+        }).AddTo(_disposable);
+        }
+
+
+
+
+        private void OnDisable()
+        {
+            _disposable.Dispose();
         }
     }
 }

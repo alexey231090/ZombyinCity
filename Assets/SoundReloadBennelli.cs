@@ -1,16 +1,17 @@
 
 using UnityEngine;
+using Zenject;
 
 public class SoundReloadBennelli : StateMachineBehaviour
 {
-
+    [Inject]
     SoundManager soundManager;
     bool hasExecuted = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       soundManager = GameObject.FindObjectOfType<SoundManager>();
+       //soundManager = GameObject.FindObjectOfType<SoundManager>();
 
        hasExecuted = false;
 
@@ -27,7 +28,7 @@ public class SoundReloadBennelli : StateMachineBehaviour
         {
             soundManager.ReloadAudio[3].Play();
 
-            Debug.Log("PlaY!!!!!!!!!!!!!!!!!!!!!! ");
+            Debug.Log("PlaY!");
 
             hasExecuted = true;
         }
