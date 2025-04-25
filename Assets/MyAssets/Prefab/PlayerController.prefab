@@ -3398,6 +3398,7 @@ GameObject:
   - component: {fileID: 356800223507251492}
   - component: {fileID: 356800223507251517}
   - component: {fileID: 356800223507251518}
+  - component: {fileID: 2077112456}
   m_Layer: 6
   m_Name: PlayerController
   m_TagString: Player
@@ -3563,6 +3564,18 @@ MonoBehaviour:
   HitGameObject: {fileID: 0}
   trigger: {fileID: 4279828297402082131}
   OnTargetZombi: {fileID: 0}
+--- !u!114 &2077112456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4279828297402082133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68436a3a13ba5564292a7d014fbbc0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4279828297615820752
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using Zenject;
 
 namespace FpsZomby
 {
 
     public class VisualControlSelectWeponIcons : MonoBehaviour
     {
+        [Inject]
+        __StartLevel __StartLevel;
+
         public PlayerSwitchingStates.Weapons PlayeSelectWepon;
         [SerializeField] private GameObject[] WeponsIcon;
         [SerializeField] private GameObject[] selectIcons;

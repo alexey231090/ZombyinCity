@@ -305,7 +305,7 @@ namespace FpsZomby {
             switch (state)
             {
                 case ZombiStatus.idle:
-                    Debug.Log("¬ход в состо€ние: Idle");
+                  //  Debug.Log("¬ход в состо€ние: Idle");
                     StartIdle();
                     break;
 

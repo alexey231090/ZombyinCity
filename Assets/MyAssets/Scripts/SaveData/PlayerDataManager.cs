@@ -1,95 +1,134 @@
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; private set; }
 
-    [Inject]
-    PlayerSwitchingStates playerSwitchingStates;
+    private readonly CompositeDisposable _disposables = new();
 
-    // Данные игрока
-    public int GunAmmo { get; private set; }
-    public int BennelliAmmo { get; private set; }
-    public int Ak74Ammo { get; private set; }
-    
+    [Inject]
+     __StartLevel __StartLevel;
+
+    // Массивы для хранения данных о патронах для каждого уровня
+    public int[] GunAmmo = new int[9];
+    public int[] BennelliAmmo = new int[9];
+    public int[] Ak74Ammo = new int[9];
 
     private void Awake()
     {
-        // Реализация Singleton
         if (Instance == null)
         {
-           
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Сохраняем объект между уровнями
-            LoadData(); // Загружаем данные при старте
+            DontDestroyOnLoad(gameObject);
+
+            // Подписываемся на событие загрузки новой сцены
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
-            Destroy(gameObject); // Уничтожаем дублирующий объект
+            Destroy(gameObject);
         }
     }
 
-    // Метод для сохранения данных в PlayerPrefs
-    public void SaveData()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        PlayerPrefs.SetInt("GunAmmo", GunAmmo);
-        PlayerPrefs.SetInt("BennelliAmmo", BennelliAmmo);
-        PlayerPrefs.SetInt("Ak74Ammo", Ak74Ammo);
-        PlayerPrefs.Save(); // Сохраняем изменения
-        Debug.Log("Данные сохранены:");
+        // Обновляем подписку на __StartLevel при загрузке новой сцены
+        UpdateStartLevelSubscription();
     }
 
-    // Метод для загрузки данных из PlayerPrefs
-    public void LoadData()
+    private void UpdateStartLevelSubscription()
     {
         
-        GunAmmo = PlayerPrefs.GetInt("GunAmmo", 0); // Загружаем количество патронов (0 — значение по умолчанию)
-        BennelliAmmo = PlayerPrefs.GetInt("BennelliAmmo", 0); // Загружаем количество патронов (0 — значение по умолчанию)
-        Ak74Ammo = PlayerPrefs.GetInt("Ak74Ammo", 0); // Загружаем количество патронов (0 — значение по умолчанию)        
-        Debug.Log("Данные загружены:");
+
+        if (__StartLevel != null)
+        {
+            // Очищаем предыдущие подписки
+            _disposables.Clear();
+
+            // Подписываемся на событие OnLoadData
+            __StartLevel.OnLoadData.Subscribe(_ => LoadDataForCurrentScene()).AddTo(_disposables);
+            Debug.Log("PlayerDataManager - Подписка на событие OnLoadData выполнена.");
+        }
+        else
+        {
+            Debug.LogError("Внимание!: __StartLevel не найден в текущей сцене!");
+        }
+
+
+
+        
+
+
     }
 
-    // Метод для обновления данных игрока
-    public void UpdateData(int gun, int bennelli,int ak74)
+    // Метод для сохранения данных текущей сцены (для следующего уровня)
+    public void SaveDataForCurrentScene()
     {
-        GunAmmo = gun;
-        BennelliAmmo = bennelli;
-        Ak74Ammo = ak74;
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1; // Сохраняем для следующего уровня
 
-        Debug.Log("Данные обновлены: ");
+        if (sceneIndex >= 0 && sceneIndex < 9) // Проверяем, что индекс в пределах массива
+        {
+            PlayerPrefs.SetInt($"GunAmmo_Level_{sceneIndex}", GunAmmo[sceneIndex]);
+            PlayerPrefs.SetInt($"BennelliAmmo_Level_{sceneIndex}", BennelliAmmo[sceneIndex]);
+            PlayerPrefs.SetInt($"Ak74Ammo_Level_{sceneIndex}", Ak74Ammo[sceneIndex]);
+            PlayerPrefs.Save();
+
+            Debug.Log($"Данные сохранены для следующего уровня {sceneIndex}: GunAmmo={GunAmmo[sceneIndex]}, BennelliAmmo={BennelliAmmo[sceneIndex]}, Ak74Ammo={Ak74Ammo[sceneIndex]}");
+        }
+        else
+        {
+            Debug.LogWarning($"Индекс следующей сцены {sceneIndex} выходит за пределы массива.");
+        }
     }
 
-    // Метод для сохранения текущих данных о патронах
-    private void SaveCurrentAmmoData()
+    // Метод для загрузки данных текущей сцены
+    public void LoadDataForCurrentScene()
     {
-        // Получаем данные из PlayerSwitchingStates
-        GunAmmo = PlayerSwitchingStates.weaponBullets["Gun"];
-        BennelliAmmo = PlayerSwitchingStates.weaponBullets["Bennelli_M4"];
-        Ak74Ammo = PlayerSwitchingStates.weaponBullets["AK74"];
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // Сохраняем данные в PlayerPrefs
-        SaveData();
+        Debug.Log($"Загрузка данных до if для уровня {sceneIndex}");
+
+        if (sceneIndex >= 0 && sceneIndex < 9)
+        {
+            GunAmmo[sceneIndex] = PlayerPrefs.GetInt($"GunAmmo_Level_{sceneIndex}", 0);
+            BennelliAmmo[sceneIndex] = PlayerPrefs.GetInt($"BennelliAmmo_Level_{sceneIndex}", 0);
+            Ak74Ammo[sceneIndex] = PlayerPrefs.GetInt($"Ak74Ammo_Level_{sceneIndex}", 0);
+
+            Debug.Log($"Данные загружены для уровня {sceneIndex}: GunAmmo={GunAmmo[sceneIndex]}, BennelliAmmo={BennelliAmmo[sceneIndex]}, Ak74Ammo={Ak74Ammo[sceneIndex]}");
+        }
+        else
+        {
+            Debug.LogWarning($"Индекс сцены {sceneIndex} выходит за пределы массива.");
+        }
     }
 
     private void OnEnable()
     {
-        // Подписываемся на событие 
-        TriggerFinish.OnSaveData.Subscribe(_ => SaveCurrentAmmoData()).AddTo(this);
 
-        __StartLevel.OnLoadData.Subscribe(_ => LoadData()).AddTo(this);
+        //// Подписываемся на событие TriggerFinish
+        //TriggerFinish.OnSaveData.Subscribe(_ =>
+        //{
+        //    // Сохраняем данные текущей сцены
+        //    SaveDataForCurrentScene();
+        //}).AddTo(_disposables);
     }
 
     private void OnDisable()
     {
-        // Отписываемся от события 
-        TriggerFinish.OnSaveData.Dispose();
 
-        __StartLevel.OnLoadData.Dispose();
+
+        _disposables.Dispose();
     }
 
+    private void OnDestroy()
+    {
+        // Отписываемся от события загрузки сцены
+        SceneManager.sceneLoaded -= OnSceneLoaded;
 
-
+        
+    }
 }
 

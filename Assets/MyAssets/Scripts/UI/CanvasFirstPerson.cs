@@ -3,12 +3,15 @@ using TMPro;
 using UniRx;
 using System;
 using UnityEngine.UI;
+using Zenject;
 
 
 
 public class CanvasFirstPerson : MonoBehaviour
 {
-   
+    [Inject]
+    __StartLevel __StartLevel;
+
     public TextMeshProUGUI canvasAmmoText;
     public TextMeshProUGUI PlayerLifeText;
     public TextMeshProUGUI canvasPlayerShopWepon;

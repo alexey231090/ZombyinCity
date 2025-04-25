@@ -86,8 +86,11 @@ public class PlayerGunBehaviur : IPlayerBehaviour, IStateFire
 
     private void Reload()
     {
-        animator.SetBool("ReloadBool", true);
-        soundmanager.ReloadAudio[0].Play();
+        if (animator != null)
+        {
+            animator.SetBool("ReloadBool", true);
+            soundmanager.ReloadAudio[0].Play();
+        }
 
         
     }

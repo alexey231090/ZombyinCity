@@ -1,99 +1,87 @@
 using UniRx;
 using UnityEngine;
-using Zenject;
+using UnityEngine.SceneManagement;
 
 public class __StartLevel : MonoBehaviour
 {
+    private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public static readonly Subject<Unit> OnLoadData = new Subject<Unit>(); // Вызываем событие Загрузки данных
-    public static readonly Subject<int> IconActivateWepons = new Subject<int>();
+    public readonly Subject<Unit> OnLoadData = new Subject<Unit>(); // Вызываем событие Загрузки данных
+    public readonly Subject<int> IconActivateWepons = new Subject<int>();
 
     [SerializeField] bool crowbarActiv, gunActiv, benelliActiv, ak74Activ; // Переменные для проверки активации предметов
     [SerializeField] int crowbarIndex, gunIndex, benelliIndex, ak74Index; // Индексы для иконок оружия
 
-    [Inject]
-    PlayerSwitchingStates playerSwitchingStates; // Переменная для доступа к классу PlayerSwitchingStates
-
-
     private void OnTriggerEnter(Collider other)
     {
-        
-
         // Проверяем, существует ли PlayerDataManager в сцене  
         if (PlayerDataManager.Instance != null)
         {
-            OnLoadData.OnNext(Unit.Default); // Вызываем событие Загрузки данных 
+            int sceneIndex = SceneManager.GetActiveScene().buildIndex; // Получаем индекс текущей сцены
 
-            // Обновляем словарь weaponBullets  
-            PlayerSwitchingStates.weaponBullets["Gun"] = PlayerDataManager.Instance.GunAmmo;
-            PlayerSwitchingStates.weaponBullets["Bennelli_M4"] = PlayerDataManager.Instance.BennelliAmmo;
-            PlayerSwitchingStates.weaponBullets["AK74"] = PlayerDataManager.Instance.Ak74Ammo;
+            // Загружаем данные о патронах из массива с индексом текущей сцены
+            PlayerSwitchingStates.weaponBullets["Gun"] = PlayerDataManager.Instance.GunAmmo[sceneIndex];
+            PlayerSwitchingStates.weaponBullets["Bennelli_M4"] = PlayerDataManager.Instance.BennelliAmmo[sceneIndex];
+            PlayerSwitchingStates.weaponBullets["AK74"] = PlayerDataManager.Instance.Ak74Ammo[sceneIndex];
 
             // Отправляем обновленные данные в Subject  
             PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
+
+            OnLoadData.OnNext(Unit.Default); // Вызываем событие Загрузки данных 
+            Debug.Log("__StartLevel - Отправляем событие о загрузки OnLoadData");
         }
         else
         {
             Debug.Log("PlayerDataManager не найден в сцене!");
-            
         }
 
+        // Устанавливаем состояние для предметов
+        PlayerSwitchingStates.CrowbarIsActive = crowbarActiv;
+        PlayerSwitchingStates.GunIsActive = gunActiv;
+        PlayerSwitchingStates.BennelliIsActive = benelliActiv;
+        PlayerSwitchingStates.AK74IsActive = ak74Activ;
 
-        PlayerSwitchingStates.CrowbarIsActive = crowbarActiv; // Устанавливаем состояние для предмета "Кувалда"  
-        PlayerSwitchingStates.GunIsActive = gunActiv; // Устанавливаем состояние для предмета "Пистолет"  
-        PlayerSwitchingStates.BennelliIsActive = benelliActiv; // Устанавливаем состояние для предмета "Бенелли"  
-        PlayerSwitchingStates.AK74IsActive = ak74Activ; // Устанавливаем состояние для предмета "АК74"  
-
-        // Активируем иконки оружия  
+        // Активируем иконки оружия
         if (crowbarActiv)
         {
-            Observable.Timer(System.TimeSpan.FromSeconds(0.05))
-                .Subscribe(_ =>
-                {
+           
                     IconActivateWepons.OnNext(crowbarIndex);
-                })
-                .AddTo(this);
+                
         }
 
         if (gunActiv)
         {
-            Observable.Timer(System.TimeSpan.FromSeconds(0.1))
-                .Subscribe(_ =>
-                {
+            
                     IconActivateWepons.OnNext(gunIndex);
-
-                    print("gunIndex = !!!!!!!!!!!!!!!!!!!!!!!!!!!" + gunIndex);
-                })
-                .AddTo(this);
+                    
+                
         }
 
         if (benelliActiv)
         {
-            Observable.Timer(System.TimeSpan.FromSeconds(0.15))
-                .Subscribe(_ =>
-                {
+            
                     IconActivateWepons.OnNext(benelliIndex);
-                })
-                .AddTo(this);
+                
         }
 
         if (ak74Activ)
         {
-            Observable.Timer(System.TimeSpan.FromSeconds(0.2))
-                .Subscribe(_ =>
-                {
+            
                     IconActivateWepons.OnNext(ak74Index);
-                })
-                .AddTo(this);
+                
         }
+    }
 
-        // Удаляем объект через 2 секунды  
-        Observable.Timer(System.TimeSpan.FromSeconds(2))
-            .Subscribe(_ =>
-            {
-                Destroy(this.gameObject);
-            })
-            .AddTo(this);
+    private void OnTriggerExit(Collider other)
+    {
+        _disposables.Dispose();
+        Destroy(this.gameObject);
+    }
+
+    private void OnDisable()
+    {
+        _disposables.Dispose();
+        IconActivateWepons.OnCompleted();
     }
 }
 
