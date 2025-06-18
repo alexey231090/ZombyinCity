@@ -13,22 +13,35 @@ public class PlayerDataManager : MonoBehaviour
      __StartLevel __StartLevel;
 
     // Массивы для хранения данных о патронах для каждого уровня
-    public int[] GunAmmo = new int[9];
-    public int[] BennelliAmmo = new int[9];
-    public int[] Ak74Ammo = new int[9];
+    public int[] GunAmmo = new int[10]; // 0-9 (0 - меню, 1-9 - уровни)
+    public int[] BennelliAmmo = new int[10];
+    public int[] Ak74Ammo = new int[10];
 
     private void Awake()
     {
+        Debug.Log($"PlayerDataManager.Awake() вызван. Instance = {Instance}");
+        
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            // Всегда инициализируем массивы правильного размера
+            GunAmmo = new int[10];
+            BennelliAmmo = new int[10];
+            Ak74Ammo = new int[10];
+
             // Подписываемся на событие загрузки новой сцены
             SceneManager.sceneLoaded += OnSceneLoaded;
+            
+            // Загружаем все сохраненные данные
+            LoadAllSavedData();
+            
+            Debug.Log("PlayerDataManager инициализирован как синглтон с массивами размером 10");
         }
         else
         {
+            Debug.Log("PlayerDataManager уже существует, уничтожаем дубликат");
             Destroy(gameObject);
         }
     }
@@ -67,20 +80,33 @@ public class PlayerDataManager : MonoBehaviour
     // Метод для сохранения данных текущей сцены (для следующего уровня)
     public void SaveDataForCurrentScene()
     {
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1; // Сохраняем для следующего уровня
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextLevelIndex = currentSceneIndex + 1; // Сохраняем для следующего уровня
 
-        if (sceneIndex >= 0 && sceneIndex < 9) // Проверяем, что индекс в пределах массива
+        // Проверяем, что следующий уровень в пределах 1-9 (не сохраняем для меню и после 9 уровня)
+        if (nextLevelIndex >= 1 && nextLevelIndex <= 9)
         {
-            PlayerPrefs.SetInt($"GunAmmo_Level_{sceneIndex}", GunAmmo[sceneIndex]);
-            PlayerPrefs.SetInt($"BennelliAmmo_Level_{sceneIndex}", BennelliAmmo[sceneIndex]);
-            PlayerPrefs.SetInt($"Ak74Ammo_Level_{sceneIndex}", Ak74Ammo[sceneIndex]);
+            // Сохраняем текущие патроны игрока для следующего уровня
+            int currentGunAmmo = PlayerSwitchingStates.weaponBullets.ContainsKey("Gun") ? PlayerSwitchingStates.weaponBullets["Gun"] : 0;
+            int currentBennelliAmmo = PlayerSwitchingStates.weaponBullets.ContainsKey("Bennelli_M4") ? PlayerSwitchingStates.weaponBullets["Bennelli_M4"] : 0;
+            int currentAk74Ammo = PlayerSwitchingStates.weaponBullets.ContainsKey("AK74") ? PlayerSwitchingStates.weaponBullets["AK74"] : 0;
+
+            // Сохраняем в PlayerPrefs
+            PlayerPrefs.SetInt($"GunAmmo_Level_{nextLevelIndex}", currentGunAmmo);
+            PlayerPrefs.SetInt($"BennelliAmmo_Level_{nextLevelIndex}", currentBennelliAmmo);
+            PlayerPrefs.SetInt($"Ak74Ammo_Level_{nextLevelIndex}", currentAk74Ammo);
             PlayerPrefs.Save();
 
-            Debug.Log($"Данные сохранены для следующего уровня {sceneIndex}: GunAmmo={GunAmmo[sceneIndex]}, BennelliAmmo={BennelliAmmo[sceneIndex]}, Ak74Ammo={Ak74Ammo[sceneIndex]}");
+            // Также обновляем массивы
+            GunAmmo[nextLevelIndex] = currentGunAmmo;
+            BennelliAmmo[nextLevelIndex] = currentBennelliAmmo;
+            Ak74Ammo[nextLevelIndex] = currentAk74Ammo;
+
+            Debug.Log($"Данные сохранены для следующего уровня {nextLevelIndex}: GunAmmo={currentGunAmmo}, BennelliAmmo={currentBennelliAmmo}, Ak74Ammo={currentAk74Ammo}");
         }
         else
         {
-            Debug.LogWarning($"Индекс следующей сцены {sceneIndex} выходит за пределы массива.");
+            Debug.LogWarning($"Следующий уровень {nextLevelIndex} вне диапазона 1-9. Сохранение пропущено.");
         }
     }
 
@@ -89,9 +115,10 @@ public class PlayerDataManager : MonoBehaviour
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        Debug.Log($"Загрузка данных до if для уровня {sceneIndex}");
+        Debug.Log($"Загрузка данных для уровня {sceneIndex}");
 
-        if (sceneIndex >= 0 && sceneIndex < 9)
+        // Загружаем только для уровней 1-9 (не для меню)
+        if (sceneIndex >= 1 && sceneIndex <= 9)
         {
             GunAmmo[sceneIndex] = PlayerPrefs.GetInt($"GunAmmo_Level_{sceneIndex}", 0);
             BennelliAmmo[sceneIndex] = PlayerPrefs.GetInt($"BennelliAmmo_Level_{sceneIndex}", 0);
@@ -101,19 +128,18 @@ public class PlayerDataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Индекс сцены {sceneIndex} выходит за пределы массива.");
+            Debug.Log($"Сцена {sceneIndex} - это меню или не уровень. Загрузка данных пропущена.");
         }
     }
 
     private void OnEnable()
     {
-
-        //// Подписываемся на событие TriggerFinish
-        //TriggerFinish.OnSaveData.Subscribe(_ =>
-        //{
-        //    // Сохраняем данные текущей сцены
-        //    SaveDataForCurrentScene();
-        //}).AddTo(_disposables);
+        // Подписываемся на событие TriggerFinish
+        TriggerFinish.OnSaveData.Subscribe(_ =>
+        {
+            // Сохраняем данные текущей сцены
+            SaveDataForCurrentScene();
+        }).AddTo(_disposables);
     }
 
     private void OnDisable()
@@ -129,6 +155,37 @@ public class PlayerDataManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
         
+    }
+
+    // Метод для проверки состояния PlayerDataManager
+    public bool IsInitialized()
+    {
+        bool isInitialized = Instance != null && 
+               GunAmmo != null && 
+               BennelliAmmo != null && 
+               Ak74Ammo != null &&
+               GunAmmo.Length >= 10;
+               
+        Debug.Log($"PlayerDataManager.IsInitialized(): Instance={Instance != null}, GunAmmo={GunAmmo != null}({GunAmmo?.Length}), BennelliAmmo={BennelliAmmo != null}({BennelliAmmo?.Length}), Ak74Ammo={Ak74Ammo != null}({Ak74Ammo?.Length}), Result={isInitialized}");
+        
+        return isInitialized;
+    }
+
+    // Метод для загрузки всех сохраненных данных при инициализации
+    private void LoadAllSavedData()
+    {
+        Debug.Log("Загружаем все сохраненные данные...");
+        
+        for (int levelIndex = 1; levelIndex <= 9; levelIndex++)
+        {
+            GunAmmo[levelIndex] = PlayerPrefs.GetInt($"GunAmmo_Level_{levelIndex}", 0);
+            BennelliAmmo[levelIndex] = PlayerPrefs.GetInt($"BennelliAmmo_Level_{levelIndex}", 0);
+            Ak74Ammo[levelIndex] = PlayerPrefs.GetInt($"Ak74Ammo_Level_{levelIndex}", 0);
+            
+            Debug.Log($"Уровень {levelIndex}: GunAmmo={GunAmmo[levelIndex]}, BennelliAmmo={BennelliAmmo[levelIndex]}, Ak74Ammo={Ak74Ammo[levelIndex]}");
+        }
+        
+        Debug.Log("Все сохраненные данные загружены");
     }
 }
 
