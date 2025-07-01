@@ -1,0 +1,1604 @@
+{
+    "items": [
+        {
+            "pathName": "Отслеживание жизни зомби",
+            "description": "Путь для дебага переменной жизни зомби.",
+            "steps": [
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "lifeZombi"
+                    ],
+                    "comment": "Текущее значение жизни зомби.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "PlayerGunBehaviur",
+                    "variableName": "myDemage",
+                    "variableNames": [
+                        "myDemage"
+                    ],
+                    "comment": "",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": false,
+                    "hostScriptName": "Player",
+                    "instanceFieldName": "behaviorCurrent"
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Сохранение патронов",
+            "description": "",
+            "steps": [
+                {
+                    "scriptName": "PlayerSwitchingStates",
+                    "variableName": "playerLife",
+                    "variableNames": [
+                        "playerLife"
+                    ],
+                    "comment": "Словарь, где хранится текущее количество патронов для каждого оружия.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "PlayerDataManager",
+                    "variableName": "",
+                    "variableNames": [
+                        "GunAmmo",
+                        "BennelliAmmo",
+                        "Ak74Ammo"
+                    ],
+                    "comment": "Массивы для хранения патронов по уровням.Где 0-это меню ,1 - 1й уровень",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "PlayerDataManager",
+                    "variableName": "",
+                    "variableNames": [],
+                    "comment": "Сохранение данных о патронах в PlayerPrefs при переходе на следующий уровень.\n SaveDataForCurrentScene()",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Финиш Тригер",
+            "description": "",
+            "steps": [
+                {
+                    "scriptName": "TriggerFinish",
+                    "variableName": "OnSaveData",
+                    "variableNames": [
+                        "OnSaveData",
+                        "levelName"
+                    ],
+                    "comment": "При косании финиш тригера срабатывает сохранение OnSave",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Старт уровня , загрузка сохранения",
+            "description": "",
+            "steps": [
+                {
+                    "scriptName": "__StartLevel",
+                    "variableName": "OnLoadData",
+                    "variableNames": [
+                        "OnLoadData"
+                    ],
+                    "comment": "При касании тригера срабатывает метод OnLoad",
+                    "trackedInstances": [
+                        {
+                            "instanceId": 30504,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 1222.5262994
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "PlayerDataManager",
+                    "variableName": "_disposables",
+                    "variableNames": [
+                        "_disposables",
+                        "_disposables",
+                        "_disposables"
+                    ],
+                    "comment": " __StartLevel  - Инициализация",
+                    "trackedInstances": [
+                        {
+                            "instanceId": 27978,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 1222.526648
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Состояния игрока",
+            "description": "Переменные , выдерга,писталет,дробовик,автомат",
+            "steps": [
+                {
+                    "scriptName": "PlayerBennelliBehaviour",
+                    "variableName": "allammo",
+                    "variableNames": [
+                        "allammo",
+                        "ammo",
+                        "animator",
+                        "bennelliIntSubject",
+                        "maxMagazine",
+                        "spread",
+                        "switchState",
+                        "myDemage"
+                    ],
+                    "comment": "Состояние игрока , выбор оружия",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": false,
+                    "hostScriptName": "Player",
+                    "instanceFieldName": "behaviorCurrent"
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Полный путь выстрела по зомби",
+            "description": "Отслеживает всю цепочку событий от выстрела игрока до реакции зомби и возвращения в исходное состояние.",
+            "steps": [
+                {
+                    "scriptName": "PlayerSwitchingStates",
+                    "variableName": "",
+                    "variableNames": [
+                        "PlayerFire"
+                    ],
+                    "comment": "1. Игрок стреляет. Скрипт PlayerSwitchingStates вызывает событие PlayerFire, передавая урон и информацию о попадании.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": 48856,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2949868
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "DemageZombi"
+                    ],
+                    "comment": "2. Скрипт зомби (Zombi.cs) подписан на событие PlayerFire и при его срабатывании вызывает метод DemageZombi.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2952516
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2952714
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295290600001
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2953111
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295329800001
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2953488
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295366800001
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2953843
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295402900001
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2954211
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2954402
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2954603
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295478600001
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.295497000001
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2955155
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2955348
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2955556
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "lifeZombi",
+                        "statusZombi"
+                    ],
+                    "comment": "3. В DemageZombi уменьшается здоровье (lifeZombi) и статус (statusZombi) меняется на 'injury' (ранение).",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2958284
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2958518
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2958753
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2959014
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2959254
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2959498
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2959732
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2959969
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2960215
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.296046000001
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.296070100001
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2960939
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2961184
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2961417
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2961657
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.296190000001
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2962145
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "StartInjury"
+                    ],
+                    "comment": "4. Смена состояния на 'injury' приводит к вызову метода StartInjury, который запускает анимацию.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.296468800001
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.296486500001
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965047
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965234
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965413
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965601
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965781
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2965965
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2966158
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2966352
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2966545
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2966729
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2966933
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2967114
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2967297
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2967482
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2967663
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "animator.isHit"
+                    ],
+                    "comment": "5. В StartInjury булева переменная аниматора 'isHit' устанавливается в 'true'.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2970246
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2970468
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2970667
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2970866
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2971063
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2971257
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2971455
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2971672
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2971872
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2972076
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2972288
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2972505
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2972708
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.297290800001
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.297312800001
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2973329
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2973549
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "StateZombiHit",
+                    "variableName": "",
+                    "variableNames": [
+                        "ZombiInjury"
+                    ],
+                    "comment": "6. Скрипт StateZombiHit (на состоянии анимации) отслеживает ее завершение и вызывает событие ZombiInjury.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "ZombyInjurnyEndAnimation"
+                    ],
+                    "comment": "7. Скрипт зомби (Zombi.cs) ловит событие ZombiInjury и вызывает метод ZombyInjurnyEndAnimation.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.297868200001
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2979066
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.297944900001
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2979841
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2980227
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2980616
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298099900001
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2981395
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298179700001
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2982182
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298257800001
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2982974
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298336
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2983747
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2984133
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298453000001
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2984933
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "animator.isHit",
+                        "statusZombi"
+                    ],
+                    "comment": "8. В ZombyInjurnyEndAnimation параметр 'isHit' сбрасывается в 'false', и статус зомби возвращается в 'run'.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -22770,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2987647
+                        },
+                        {
+                            "instanceId": -21896,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298798200001
+                        },
+                        {
+                            "instanceId": -21526,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298829700001
+                        },
+                        {
+                            "instanceId": -21370,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2988631
+                        },
+                        {
+                            "instanceId": -19748,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2988951
+                        },
+                        {
+                            "instanceId": -19448,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2989297
+                        },
+                        {
+                            "instanceId": -15574,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298962
+                        },
+                        {
+                            "instanceId": -14970,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.298993800001
+                        },
+                        {
+                            "instanceId": -12988,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.299026800001
+                        },
+                        {
+                            "instanceId": -12618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2990592
+                        },
+                        {
+                            "instanceId": -11864,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.299093
+                        },
+                        {
+                            "instanceId": -11156,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.299126900001
+                        },
+                        {
+                            "instanceId": -10404,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2991597
+                        },
+                        {
+                            "instanceId": -9706,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2991922
+                        },
+                        {
+                            "instanceId": -9252,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2992242
+                        },
+                        {
+                            "instanceId": -8880,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2992584
+                        },
+                        {
+                            "instanceId": 47406,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 8868.2992914
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Отладка движения зомби при ранении",
+            "description": "Отслеживает, как изменяется скорость NavMesh агента зомби при получении ранения, чтобы понять, почему он продолжает двигаться.",
+            "steps": [
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "DemageZombi"
+                    ],
+                    "comment": "1. Зомби получает урон, вызывается метод DemageZombi.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "statusZombi"
+                    ],
+                    "comment": "2. В DemageZombi, если зомби не убит, его статус (statusZombi) меняется на 'injury'.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "StartInjury"
+                    ],
+                    "comment": "3. Смена статуса на 'injury' вызывает метод StartInjury.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "zombiSpeedDebug"
+                    ],
+                    "comment": "4. В StartInjury скорость агента (zombyAgent.speed) устанавливается на 0.1f. Для полной остановки значение должно быть 0f.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "StateZombiHit",
+                    "variableName": "",
+                    "variableNames": [
+                        "ZombiInjury"
+                    ],
+                    "comment": "5. После завершения анимации ранения StateZombiHit вызывает событие ZombiInjury.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "ZombyInjurnyEndAnimation"
+                    ],
+                    "comment": "6. Zombi.cs обрабатывает событие ZombiInjury и вызывает метод ZombyInjurnyEndAnimation.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "statusZombi",
+                        "zombiSpeedDebug"
+                    ],
+                    "comment": "7. В ZombyInjurnyEndAnimation скорость агента (zombyAgent.speed) восстанавливается до 3, а статус меняется на 'run'.",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Отладка работы нав мэша",
+            "description": "",
+            "steps": [
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "zombiSpeedDebug",
+                    "variableNames": [
+                        "zombiSpeedDebug"
+                    ],
+                    "comment": "скорость навмэш",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Поведение зомби после ранения",
+            "description": "Пошагово описывает, что происходит с NavMeshAgent и статусом зомби после завершения анимации ранения.",
+            "steps": [
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "ZombyInjurnyEndAnimation"
+                    ],
+                    "comment": "1. После завершения анимации ранения вызывается этот метод.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -15814,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3445621
+                        },
+                        {
+                            "instanceId": -14940,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3446103999995
+                        },
+                        {
+                            "instanceId": -14570,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.34466
+                        },
+                        {
+                            "instanceId": -14414,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.344709999999
+                        },
+                        {
+                            "instanceId": -12792,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3447581
+                        },
+                        {
+                            "instanceId": -12492,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3448057
+                        },
+                        {
+                            "instanceId": -8618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.344854
+                        },
+                        {
+                            "instanceId": -8014,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3449015999995
+                        },
+                        {
+                            "instanceId": -6032,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3449492
+                        },
+                        {
+                            "instanceId": -5662,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3449967
+                        },
+                        {
+                            "instanceId": -4248,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3450459999995
+                        },
+                        {
+                            "instanceId": -3496,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3450938999995
+                        },
+                        {
+                            "instanceId": -2798,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3451429
+                        },
+                        {
+                            "instanceId": -2344,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3451905
+                        },
+                        {
+                            "instanceId": -1972,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3452403
+                        },
+                        {
+                            "instanceId": 30702,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3452878
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "",
+                    "variableNames": [
+                        "statusZombi"
+                    ],
+                    "comment": "2. Статус зомби меняется на 'run'.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -15814,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3456114
+                        },
+                        {
+                            "instanceId": -14940,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3456312
+                        },
+                        {
+                            "instanceId": -14570,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3456491
+                        },
+                        {
+                            "instanceId": -14414,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3456684
+                        },
+                        {
+                            "instanceId": -12792,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.345686
+                        },
+                        {
+                            "instanceId": -12492,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457035
+                        },
+                        {
+                            "instanceId": -8618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457202
+                        },
+                        {
+                            "instanceId": -8014,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457369
+                        },
+                        {
+                            "instanceId": -6032,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457547
+                        },
+                        {
+                            "instanceId": -5662,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457714
+                        },
+                        {
+                            "instanceId": -4248,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3457886999995
+                        },
+                        {
+                            "instanceId": -3496,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3458054
+                        },
+                        {
+                            "instanceId": -2798,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.345822
+                        },
+                        {
+                            "instanceId": -2344,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3458395
+                        },
+                        {
+                            "instanceId": -1972,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.345857599999
+                        },
+                        {
+                            "instanceId": 30702,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3458745
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "isRunning",
+                    "variableNames": [
+                        "isRunning"
+                    ],
+                    "comment": "3. Скорость NavMeshAgent возвращается к нормальной (3).",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -15814,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3461836
+                        },
+                        {
+                            "instanceId": -14940,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3461969
+                        },
+                        {
+                            "instanceId": -14570,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462107
+                        },
+                        {
+                            "instanceId": -14414,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462258
+                        },
+                        {
+                            "instanceId": -12792,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462394
+                        },
+                        {
+                            "instanceId": -12492,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462535
+                        },
+                        {
+                            "instanceId": -8618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.346267
+                        },
+                        {
+                            "instanceId": -8014,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462813999995
+                        },
+                        {
+                            "instanceId": -6032,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3462953
+                        },
+                        {
+                            "instanceId": -5662,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463108999995
+                        },
+                        {
+                            "instanceId": -4248,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463249999995
+                        },
+                        {
+                            "instanceId": -3496,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463387
+                        },
+                        {
+                            "instanceId": -2798,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463523
+                        },
+                        {
+                            "instanceId": -2344,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463664
+                        },
+                        {
+                            "instanceId": -1972,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3463808
+                        },
+                        {
+                            "instanceId": 30702,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.346394499999
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "stoppingDistance",
+                    "variableNames": [
+                        "stoppingDistance"
+                    ],
+                    "comment": "4. Снимается стоп с NavMeshAgent (isStopped = false).",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -15814,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3467149
+                        },
+                        {
+                            "instanceId": -14940,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3467396
+                        },
+                        {
+                            "instanceId": -14570,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3467635
+                        },
+                        {
+                            "instanceId": -14414,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3467884
+                        },
+                        {
+                            "instanceId": -12792,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3468121999995
+                        },
+                        {
+                            "instanceId": -12492,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3468359
+                        },
+                        {
+                            "instanceId": -8618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3468596
+                        },
+                        {
+                            "instanceId": -8014,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3468833
+                        },
+                        {
+                            "instanceId": -6032,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3469088
+                        },
+                        {
+                            "instanceId": -5662,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3469325
+                        },
+                        {
+                            "instanceId": -4248,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3469577999995
+                        },
+                        {
+                            "instanceId": -3496,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3469829999995
+                        },
+                        {
+                            "instanceId": -2798,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3470071
+                        },
+                        {
+                            "instanceId": -2344,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3470308999995
+                        },
+                        {
+                            "instanceId": -1972,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3470554
+                        },
+                        {
+                            "instanceId": 30702,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3470793
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                },
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "zombiSpeedDebug",
+                    "variableNames": [
+                        "zombiSpeedDebug"
+                    ],
+                    "comment": "5. Агенту сразу задаётся цель — позиция игрока. Зомби начинает движение.",
+                    "trackedInstances": [
+                        {
+                            "instanceId": -15814,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3474116
+                        },
+                        {
+                            "instanceId": -14940,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3474332
+                        },
+                        {
+                            "instanceId": -14570,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3474556
+                        },
+                        {
+                            "instanceId": -14414,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3474786
+                        },
+                        {
+                            "instanceId": -12792,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3475006
+                        },
+                        {
+                            "instanceId": -12492,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3475231
+                        },
+                        {
+                            "instanceId": -8618,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3475449
+                        },
+                        {
+                            "instanceId": -8014,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3475663
+                        },
+                        {
+                            "instanceId": -6032,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3475886999995
+                        },
+                        {
+                            "instanceId": -5662,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3476105
+                        },
+                        {
+                            "instanceId": -4248,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.347632999999
+                        },
+                        {
+                            "instanceId": -3496,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.347656
+                        },
+                        {
+                            "instanceId": -2798,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.347678
+                        },
+                        {
+                            "instanceId": -2344,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.347699999999
+                        },
+                        {
+                            "instanceId": -1972,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3477222
+                        },
+                        {
+                            "instanceId": 30702,
+                            "lastValue": "",
+                            "highlightStartTime": 0.0,
+                            "lastCheckTime": 5145.3477443
+                        }
+                    ],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
+        },
+        {
+            "pathName": "Атака зоби , отладка",
+            "description": "",
+            "steps": [
+                {
+                    "scriptName": "FpsZomby.Zombi",
+                    "variableName": "stoppingDistance",
+                    "variableNames": [
+                        "stoppingDistance",
+                        "distanceToPlayer"
+                    ],
+                    "comment": "Initial step",
+                    "trackedInstances": [],
+                    "isMonoBehaviourTracked": true,
+                    "hostScriptName": "",
+                    "instanceFieldName": ""
+                }
+            ],
+            "isTracking": true,
+            "lastUpdateTime": "",
+            "isExpanded": true
+        }
+    ]
+}

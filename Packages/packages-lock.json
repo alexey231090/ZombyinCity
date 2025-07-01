@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.alexey231090.architecturevisualizer": {
+      "version": "file:E:/Programm/UnityHub/GitProjects/ArchitectureVisualizer/com.alexey231090.architecturevisualizer",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,

@@ -112,6 +112,9 @@ public class PlayerBennelliBehaviour : IPlayerBehaviour,IStateFire,IStateReload
         // Перезарядка
         if (Input.GetKeyDown(KeyCode.R) && ammo < maxMagazine && allammo > 0)
         {
+            // Отправить количество пуль в аниматор
+            animator.SetInteger("AllAmmoBennelli", allammo);
+            
             animator.SetBool("ReloadBool",true);
             //Задержка bool для переключения анимации
             Observable.Timer(TimeSpan.FromSeconds(0.5f)).Subscribe(_ => animator.SetBool("ReloadBool", false)).AddTo(_disposable);

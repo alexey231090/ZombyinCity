@@ -1,7 +1,7 @@
 using UnityEngine;
-using Zenject;
-using UniRx;
 using UnityEngine.SceneManagement;
+using UniRx;
+using System.Collections;
 
 public class PlayerDataManager : MonoBehaviour
 {
@@ -9,8 +9,7 @@ public class PlayerDataManager : MonoBehaviour
 
     private readonly CompositeDisposable _disposables = new();
 
-    [Inject]
-     __StartLevel __StartLevel;
+    __StartLevel startLevel;
 
     // Массивы для хранения данных о патронах для каждого уровня
     public int[] GunAmmo = new int[10]; // 0-9 (0 - меню, 1-9 - уровни)
@@ -50,31 +49,35 @@ public class PlayerDataManager : MonoBehaviour
     {
         // Обновляем подписку на __StartLevel при загрузке новой сцены
         UpdateStartLevelSubscription();
+        
+        // Автоматически загружаем данные для текущей сцены
+        LoadDataForCurrentScene();
+        
+        // Обновляем состояние оружия в PlayerSwitchingStates
+        UpdatePlayerWeaponState();
+        
+        // Запускаем отложенный поиск __StartLevel (на случай если он создается позже)
+        StartCoroutine(DelayedStartLevelSearch());
     }
 
     private void UpdateStartLevelSubscription()
     {
-        
+        // Ищем __StartLevel в текущей сцене
+         startLevel = FindObjectOfType<__StartLevel>();
 
-        if (__StartLevel != null)
+        if (startLevel != null)
         {
             // Очищаем предыдущие подписки
             _disposables.Clear();
 
             // Подписываемся на событие OnLoadData
-            __StartLevel.OnLoadData.Subscribe(_ => LoadDataForCurrentScene()).AddTo(_disposables);
+            startLevel.OnLoadData.Subscribe(_ => LoadDataForCurrentScene()).AddTo(_disposables);
             Debug.Log("PlayerDataManager - Подписка на событие OnLoadData выполнена.");
         }
         else
         {
-            Debug.LogError("Внимание!: __StartLevel не найден в текущей сцене!");
+            Debug.LogWarning("__StartLevel не найден в текущей сцене. Это нормально, если объект еще не создан или не нужен для этой сцены.");
         }
-
-
-
-        
-
-
     }
 
     // Метод для сохранения данных текущей сцены (для следующего уровня)
@@ -186,6 +189,76 @@ public class PlayerDataManager : MonoBehaviour
         }
         
         Debug.Log("Все сохраненные данные загружены");
+    }
+
+    private void UpdatePlayerWeaponState()
+    {
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        
+        // Обновляем данные только для уровней 1-9 (не для меню)
+        if (sceneIndex >= 1 && sceneIndex <= 9)
+        {
+            // Загружаем данные о патронах из массива с индексом текущей сцены
+            int gunAmmo = GunAmmo[sceneIndex];
+            int bennelliAmmo = BennelliAmmo[sceneIndex];
+            int ak74Ammo = Ak74Ammo[sceneIndex];
+            
+            // Обновляем состояние оружия
+            PlayerSwitchingStates.weaponBullets["Gun"] = gunAmmo;
+            PlayerSwitchingStates.weaponBullets["Bennelli_M4"] = bennelliAmmo;
+            PlayerSwitchingStates.weaponBullets["AK74"] = ak74Ammo;
+
+            // Отправляем обновленные данные в Subject
+            PlayerSwitchingStates.allBulletsDictSubject.OnNext(PlayerSwitchingStates.weaponBullets);
+            
+            Debug.Log($"PlayerDataManager - Автоматически обновлены патроны для уровня {sceneIndex}: Gun={gunAmmo}, Bennelli={bennelliAmmo}, AK74={ak74Ammo}");
+        }
+        else
+        {
+            Debug.Log($"Сцена {sceneIndex} - это меню или не уровень. Автоматическое обновление патронов пропущено.");
+        }
+    }
+
+    private IEnumerator DelayedStartLevelSearch()
+    {
+        yield return new WaitForSeconds(1f); // Ждем 1 секунду для поиска __StartLevel
+
+        // Повторно ищем __StartLevel
+        __StartLevel startLevel = FindObjectOfType<__StartLevel>();
+
+        if (startLevel == null)
+        {
+            Debug.LogWarning("__StartLevel не найден после задержки. Это нормально, если объект еще не создан или не нужен для этой сцены.");
+        }
+        else
+        {
+            // Очищаем предыдущие подписки
+            _disposables.Clear();
+
+            // Подписываемся на событие OnLoadData
+            startLevel.OnLoadData.Subscribe(_ => LoadDataForCurrentScene()).AddTo(_disposables);
+            Debug.Log("PlayerDataManager - Подписка на событие OnLoadData выполнена после задержки.");
+        }
+    }
+
+    // Публичный метод для ручного поиска и подписки на __StartLevel
+    public void TrySubscribeToStartLevel()
+    {
+        __StartLevel startLevel = FindObjectOfType<__StartLevel>();
+        
+        if (startLevel != null)
+        {
+            // Очищаем предыдущие подписки
+            _disposables.Clear();
+
+            // Подписываемся на событие OnLoadData
+            startLevel.OnLoadData.Subscribe(_ => LoadDataForCurrentScene()).AddTo(_disposables);
+            Debug.Log("PlayerDataManager - Ручная подписка на событие OnLoadData выполнена.");
+        }
+        else
+        {
+            Debug.LogWarning("__StartLevel не найден при ручном поиске.");
+        }
     }
 }
 

@@ -12,13 +12,39 @@ public class __StartLevel : MonoBehaviour
     [SerializeField] bool crowbarActiv, gunActiv, benelliActiv, ak74Activ; // Переменные для проверки активации предметов
     [SerializeField] int crowbarIndex, gunIndex, benelliIndex, ak74Index; // Индексы для иконок оружия
 
+    private bool _hasTriggered = false; // Флаг для предотвращения повторного срабатывания
+
+    private void Start()
+    {
+        // Уведомляем PlayerDataManager о нашем существовании
+        if (PlayerDataManager.Instance != null)
+        {
+            PlayerDataManager.Instance.TrySubscribeToStartLevel();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        // Проверяем, не срабатывал ли уже триггер
+        if (_hasTriggered)
+        {
+            Debug.Log("__StartLevel уже сработал, пропускаем повторное срабатывание");
+            return;
+        }
+
+        _hasTriggered = true; // Отмечаем, что триггер сработал
+
         // Проверяем, существует ли PlayerDataManager в сцене  
         if (PlayerDataManager.Instance == null)
         {
             Debug.LogWarning("PlayerDataManager не найден! Создаем новый экземпляр...");
             CreatePlayerDataManager();
+        }
+
+        // Убеждаемся, что PlayerDataManager подписан на наши события
+        if (PlayerDataManager.Instance != null)
+        {
+            PlayerDataManager.Instance.TrySubscribeToStartLevel();
         }
 
         if (PlayerDataManager.Instance != null && PlayerDataManager.Instance.IsInitialized())
@@ -112,13 +138,21 @@ public class __StartLevel : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _disposables.Dispose();
-        Destroy(this.gameObject);
+        // Убираем уничтожение объекта - он должен остаться в сцене
+        // Destroy(this.gameObject);
     }
 
     private void OnDisable()
     {
         _disposables.Dispose();
         IconActivateWepons.OnCompleted();
+    }
+
+    // Метод для сброса флага триггера (можно вызывать при переходе на новый уровень)
+    public void ResetTrigger()
+    {
+        _hasTriggered = false;
+        Debug.Log("__StartLevel - Флаг триггера сброшен");
     }
 }
 

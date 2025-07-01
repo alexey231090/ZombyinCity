@@ -10,7 +10,7 @@ public class StateZombiHit : StateMachineBehaviour
 
     public static event Action ZombiInjury;
 
-    bool OnState = true;
+   // bool OnState = true;
 
    
    
@@ -20,33 +20,28 @@ public class StateZombiHit : StateMachineBehaviour
     {
 
 
-        OnState = true;
+       // OnState = true;
 
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (stateInfo.normalizedTime >= 0.9f && OnState)
-        {
-
-           
-            
-            ZombiInjury?.Invoke();
-
-
-            OnState = false;
-
-        }
-    }
+   // override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+        
+    //}
 
     
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        // Ставим статус run у конкретного зомби
+        var zombi = animator.GetComponentInParent<FpsZomby.Zombi>();
+        if (zombi != null && zombi.lifeZombi > 0)
+            zombi.statusZombi = FpsZomby.Zombi.ZombiStatus.run;
+        ZombiInjury?.Invoke();
+        //OnState = false;
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

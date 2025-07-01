@@ -18,7 +18,7 @@ public class CanvasFirstPerson : MonoBehaviour
 
     public GameObject FaceBlood;
 
-    public GameObject[] AmmoIcon; // Массив иконок патронов
+    public GameObject[] AmmoIcon; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     Animator animatorIcon;
     TextMeshProUGUI textAmmo;
@@ -31,18 +31,19 @@ public class CanvasFirstPerson : MonoBehaviour
 
     private void Start()
     {
-        // Получаем компонент Image из дочернего объекта FaceBlood
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Image пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ FaceBlood
         faceBloodImage = FaceBlood.GetComponentInChildren<Image>();
-        // Устанавливаем начальную прозрачность в 0
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 0
         SetImageAlpha(0);
+
     }
 
 
     private void SetImageAlpha(float alpha)
     {
-        Color color = faceBloodImage.color; // Получаем текущий цвет
-        color.a = alpha; // Устанавливаем новый alpha
-        faceBloodImage.color = color; // Присваиваем цвет обратно
+        Color color = faceBloodImage.color; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+        color.a = alpha; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ alpha
+        faceBloodImage.color = color; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     }
 
 
@@ -60,7 +61,7 @@ public class CanvasFirstPerson : MonoBehaviour
         var crowObservable = PlayerCrowbarBehaviur.crowIntSubject
             .Select(value => value.ToString());
 
-        // Объединяем все Observable Патроны в магазине
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Observable пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         ak47Observable.Merge(gunObservable, bennObservable, crowObservable)
             .Subscribe(value =>
             {
@@ -68,7 +69,7 @@ public class CanvasFirstPerson : MonoBehaviour
             })
             .AddTo(_disposable);
 
-        // Жизнь
+        // пїЅпїЅпїЅпїЅпїЅ
         PlayerSwitchingStates.lifeIntSubject.Subscribe(value =>
         {
             if (value < 0)
@@ -81,21 +82,21 @@ public class CanvasFirstPerson : MonoBehaviour
             }
         }).AddTo(_disposable);
 
-        // Кровь на лице
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
         PlayerSwitchingStates.lifeIntSubject
             .Skip(1)
             .Subscribe(value =>
             {
-                // Устанавливаем высокую прозрачность
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 SetImageAlpha(180f / 255f);
 
-                // Плавное затухание
-                Observable.Range(0, 100) // 100 кадров для затухания
-                    .Select(i => (float)i / 100f) // Нормализуем значения от 0 до 1
-                    .Delay(TimeSpan.FromSeconds(0.01f)) // Задержка между кадрами
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                Observable.Range(0, 100) // 100 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    .Select(i => (float)i / 100f) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0 пїЅпїЅ 1
+                    .Delay(TimeSpan.FromSeconds(0.01f)) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     .Subscribe(t =>
                     {
-                        float newAlpha = Mathf.Lerp(180f / 255f, 0f, t); // Линейная интерполяция
+                        float newAlpha = Mathf.Lerp(180f / 255f, 0f, t); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                         SetImageAlpha(newAlpha);
                     })
                     .AddTo(_disposable);
@@ -104,22 +105,22 @@ public class CanvasFirstPerson : MonoBehaviour
 
         PlayerSwitchingStates.allBulletsDictSubject.Subscribe(value =>
         {
-            // Общее количество патронов на оружия
+            // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             string weaponKey = PlayerSwitchingStates.weapon.ToString();
 
-            // Проверяем, есть ли ключ в словаре
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (value.TryGetValue(weaponKey, out int bulletCount))
             {
                 canvasPlayerShopWepon.text = "/" + bulletCount.ToString();
             }
             else
             {
-                // Обработка случая, если ключ не найден
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 canvasPlayerShopWepon.text = "/0";
             }
         }).AddTo(_disposable);
 
-        // Устанавливаем количество жизни на 0 при смерти Player
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Player
         PlayerSwitchingStates.isDead.Subscribe(value =>
         {
             print("isDead");
@@ -131,7 +132,7 @@ public class CanvasFirstPerson : MonoBehaviour
 
 
 
-        // Подписка на событие в __EffectAddBullets Value содержит enum и int от BulletsTeam
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ __EffectAddBullets Value пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ enum пїЅ int пїЅпїЅ BulletsTeam
         __EffectIconAddBullets.bulletsSubject.Subscribe(value =>
         {
             switch (value.Key)
@@ -139,7 +140,7 @@ public class CanvasFirstPerson : MonoBehaviour
                 //Gun
                 case BulletsTeam.BulletWeapons.Gun:
 
-                    //Если включен то меняем текст и запускаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     if (AmmoIcon[0].activeInHierarchy)
                     {
                         
@@ -148,7 +149,7 @@ public class CanvasFirstPerson : MonoBehaviour
                         textAmmo.text = "+" + value.Value.ToString();
                         animatorIcon.SetTrigger("Add");
                     }
-                    //Если обьект выключен то включаем его,меняем текст и включаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ,пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     else
                     {
                         AmmoIcon[0].SetActive(true);
@@ -163,7 +164,7 @@ public class CanvasFirstPerson : MonoBehaviour
 
                 //Bennelli_M4
                 case BulletsTeam.BulletWeapons.Bennelli_M4:
-                    //Если включен то меняем текст и запускаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     if (AmmoIcon[1].activeInHierarchy)
                     {
 
@@ -172,7 +173,7 @@ public class CanvasFirstPerson : MonoBehaviour
                         textAmmo.text = "+" + value.Value.ToString();
                         animatorIcon.SetTrigger("Add");
                     }
-                    //Если обьект выключен то включаем его,меняем текст и включаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ,пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     else
                     {
                         AmmoIcon[1].SetActive(true);
@@ -185,7 +186,7 @@ public class CanvasFirstPerson : MonoBehaviour
 
                 //AK74
                 case BulletsTeam.BulletWeapons.AK74:
-                    //Если включен то меняем текст и запускаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     if (AmmoIcon[2].activeInHierarchy)
                     {
 
@@ -194,7 +195,7 @@ public class CanvasFirstPerson : MonoBehaviour
                         textAmmo.text = "+" + value.Value.ToString();
                         animatorIcon.SetTrigger("Add");
                     }
-                    //Если обьект выключен то включаем его,меняем текст и включаем анимацию
+                    //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ,пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     else
                     {
                         AmmoIcon[2].SetActive(true);

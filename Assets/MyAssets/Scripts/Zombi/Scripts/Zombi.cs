@@ -7,6 +7,8 @@ using System;
 namespace FpsZomby {
     public class Zombi : MonoBehaviour
     {
+
+        float zombiSpeedDebug = 0;
         [Inject]
         PlayerSwitchingStates Player;
 
@@ -24,7 +26,7 @@ namespace FpsZomby {
 
         GameObject shootZombi;
 
-        [SerializeField] float lifeZombi = 100;
+        [SerializeField] public float lifeZombi = 100;
 
         float distanceToPlayer;
 
@@ -46,6 +48,21 @@ namespace FpsZomby {
         {
             previousStatus = statusZombi;
             EnterState(statusZombi);
+
+            if (zombyAgent != null && !zombyAgent.isOnNavMesh)
+    {
+        // Пробуем найти ближайшую точку на NavMesh и телепортировать туда
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 2.0f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+            Debug.Log($"{gameObject.name}: Телепортирован на NavMesh!");
+        }
+        else
+        {
+            Debug.LogError($"{gameObject.name}: Не удалось найти NavMesh рядом!");
+        }
+    }
         }
 
         private void OnEnable()
@@ -64,6 +81,14 @@ namespace FpsZomby {
 
         private void Update()
         {
+            if (zombyAgent != null)
+            {
+                if (!zombyAgent.enabled)
+                    Debug.LogWarning($"{gameObject.name}: NavMeshAgent отключён!");
+                else if (!zombyAgent.isOnNavMesh)
+                    Debug.LogError($"{gameObject.name}: NavMeshAgent НЕ НА СЕТКЕ!");
+            }
+            zombiSpeedDebug = zombyAgent.speed;
             OnStateZombi();
             UpdateState(); // Вызов метода обновления для текущего состояния
 
@@ -97,18 +122,45 @@ namespace FpsZomby {
 
         private void StartRun()
         {
-            // Убедитесь, что зомби начинает бежать, даже если он не в списке activeZombies
+            if (zombyAgent == null)
+            {
+                Debug.LogError($"{gameObject.name}: NavMeshAgent не найден!");
+                return;
+            }
+
+            if (!zombyAgent.enabled)
+            {
+                Debug.LogWarning($"{gameObject.name}: NavMeshAgent отключён (enabled = false)!");
+                return;
+            }
+
+            if (!zombyAgent.isOnNavMesh)
+            {
+                Debug.LogError($"{gameObject.name}: NavMeshAgent НЕ НА СЕТКЕ! (isOnNavMesh = false)");
+                return;
+            }
+
+            // Если всё ок — запускаем движение
+            Debug.Log($"{gameObject.name}: StartRun OK — агент на сетке, запускаем движение!");
+            zombyAgent.isStopped = false;
             zombyAgent.speed = 3;
+            zombyAgent.SetDestination(Player.transform.position);
+
             animator.SetBool("isRun", true);
             animator.SetBool("isAttack", false);
-
             isRunning = animator.GetBool("isRun");
-
             footDust.Play();
         }
 
         private void UpdateRun()
         {
+            // ЗАЩИТА: Прежде чем давать команду, проверяем, что агент жив и на сетке.
+            // Это устранит ошибку "SetDestination can only be called on an active agent".
+            if (zombyAgent == null || !zombyAgent.enabled || !zombyAgent.isOnNavMesh)
+            {
+                return;
+            }
+
             distanceToPlayer = Vector3.Distance(transform.position, Player.transform.position);
             
             
@@ -116,7 +168,7 @@ namespace FpsZomby {
             {
                 zombyAgent.SetDestination(Player.transform.position);
             }
-
+        //Запуск атаки зомби
             if (distanceToPlayer < stoppingDistance)
             {
                 zombyAgent.speed = 0;
@@ -154,46 +206,32 @@ namespace FpsZomby {
 
         private void StartInjury()
         {
-            // Проверка анимации ранения
-            animator.SetBool("isHit", true);
-            zombyAgent.speed = 0.1f; // Замедляем зомби           
-        }
-
-        
-        private void UpdateInjury()
-        {
-            if (!IsInvoking(nameof(InjuryToRun)))
+            // Анимация ранения теперь будет вызываться триггером,
+            // но мы по-прежнему должны остановить зомби.
+            if(zombyAgent.enabled)
             {
-                Invoke(nameof(InjuryToRun), 3f);
+                zombyAgent.isStopped = true; // Используем isStopped для четкой остановки
             }
         }
 
-        private void InjuryToRun()
-        {
-            if (statusZombi == ZombiStatus.injury)
-            {
-                statusZombi = ZombiStatus.run;
-                print("Start!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            }
-        }
         
-
         public void ZombyInjurnyEndAnimation()
         {
-            animator.SetBool("isHit", false);            
-            zombyAgent.speed = 3;
+            // Кастыль: только если этот аниматор сейчас в состоянии ранения
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Zombie Reaction Hit"))
+                return;
 
-            if (activeZombies.Contains(this.gameObject)) // Проверка, находится ли зомби в списке activeZombies
+            if (lifeZombi > 0)
             {
-                if (lifeZombi > 0)
+                statusZombi = ZombiStatus.run;
+                if (zombyAgent.enabled && zombyAgent.isOnNavMesh)
                 {
-                    statusZombi = ZombiStatus.run;
+                    zombyAgent.speed = 3; // Возвращаем скорость после ранения
+                    zombyAgent.isStopped = false; // Снимаем стоп
+                    if (Player != null)
+                        zombyAgent.SetDestination(Player.transform.position); // Сразу задаём цель
                 }
-                
-                 
             }
-
-
         }
 
 
@@ -201,6 +239,10 @@ namespace FpsZomby {
         public void StartDead()
         {
             // Логика для состояния Dead
+            if (zombyAgent.enabled)
+            {
+                zombyAgent.isStopped = true; // Останавливаем перед отключением
+            }
             zombyAgent.speed = 0f;
             GetComponent<CapsuleCollider>().enabled = false;
             StartCoroutine(WaitClierBody());
@@ -250,27 +292,23 @@ namespace FpsZomby {
 
             if (shootZombi == gameObject) // Проверяем, что попадание произошло в текущего зомби
             {
-                Debug.Log($"Зомби {gameObject.name} получил урон: {demage}");
-
-                if (!activeZombies.Contains(gameObject))
-                {
-                    activeZombies.Add(gameObject);
-                }
+                // Исправлена проверка: не наносим урон, если зомби уже в процессе умирания.
+                if (statusZombi == ZombiStatus.dead) return;
 
                 lifeZombi -= demage;
-                
 
                 if (lifeZombi > 0)
                 {
                     statusZombi = ZombiStatus.injury;
+                    // Используем триггер 'isHit' для запуска или перезапуска анимации
+                    animator.SetTrigger("isHit"); 
                 }
                 else
                 {
-                    animator.SetTrigger("isDead"); // Анимация смерти
                     statusZombi = ZombiStatus.dead;
+                    animator.SetTrigger("isDead"); // Анимация смерти
                 }
             }
-            
         }
 
         // Обновление состояния
@@ -283,6 +321,7 @@ namespace FpsZomby {
                     break;
 
                 case ZombiStatus.run:
+                    Debug.Log("Вход в состояние: Run");
                     UpdateRun();
                     break;
 
@@ -291,7 +330,7 @@ namespace FpsZomby {
                     break;
 
                 case ZombiStatus.injury:
-                    UpdateInjury();
+                    // UpdateInjury() был удален, чтобы избежать конфликтов
                     break;
 
                 case ZombiStatus.dead:
