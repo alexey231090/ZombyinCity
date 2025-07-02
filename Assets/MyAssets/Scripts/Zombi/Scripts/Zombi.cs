@@ -122,6 +122,7 @@ namespace FpsZomby {
 
         private void StartRun()
         {
+            Debug.Log($"{gameObject.name}: StartRun вызван! status={statusZombi}, previousStatus={previousStatus}");
             if (zombyAgent == null)
             {
                 Debug.LogError($"{gameObject.name}: NavMeshAgent не найден!");
@@ -292,7 +293,6 @@ namespace FpsZomby {
 
             if (shootZombi == gameObject) // Проверяем, что попадание произошло в текущего зомби
             {
-                // Исправлена проверка: не наносим урон, если зомби уже в процессе умирания.
                 if (statusZombi == ZombiStatus.dead) return;
 
                 lifeZombi -= demage;
@@ -300,8 +300,12 @@ namespace FpsZomby {
                 if (lifeZombi > 0)
                 {
                     statusZombi = ZombiStatus.injury;
-                    // Используем триггер 'isHit' для запуска или перезапуска анимации
-                    animator.SetTrigger("isHit"); 
+                    if (zombyAgent.enabled && zombyAgent.isOnNavMesh)
+                    {
+                        zombyAgent.isStopped = true;
+                        zombyAgent.speed = 0f;
+                    }
+                    animator.SetTrigger("isHit");
                 }
                 else
                 {
@@ -344,7 +348,7 @@ namespace FpsZomby {
             switch (state)
             {
                 case ZombiStatus.idle:
-                  //  Debug.Log("Вход в состояние: Idle");
+                    Debug.Log("Вход в состояние: Idle");
                     StartIdle();
                     break;
 

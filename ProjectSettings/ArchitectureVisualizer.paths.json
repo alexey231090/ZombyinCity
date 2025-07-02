@@ -74,9 +74,9 @@
                     "instanceFieldName": ""
                 }
             ],
-            "isTracking": false,
+            "isTracking": true,
             "lastUpdateTime": "",
-            "isExpanded": false
+            "isExpanded": true
         },
         {
             "pathName": "Финиш Тригер",
@@ -111,14 +111,7 @@
                         "OnLoadData"
                     ],
                     "comment": "При касании тригера срабатывает метод OnLoad",
-                    "trackedInstances": [
-                        {
-                            "instanceId": 30504,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 1222.5262994
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -132,14 +125,7 @@
                         "_disposables"
                     ],
                     "comment": " __StartLevel  - Инициализация",
-                    "trackedInstances": [
-                        {
-                            "instanceId": 27978,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 1222.526648
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1035,104 +1021,7 @@
                         "ZombyInjurnyEndAnimation"
                     ],
                     "comment": "1. После завершения анимации ранения вызывается этот метод.",
-                    "trackedInstances": [
-                        {
-                            "instanceId": -15814,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3445621
-                        },
-                        {
-                            "instanceId": -14940,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3446103999995
-                        },
-                        {
-                            "instanceId": -14570,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.34466
-                        },
-                        {
-                            "instanceId": -14414,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.344709999999
-                        },
-                        {
-                            "instanceId": -12792,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3447581
-                        },
-                        {
-                            "instanceId": -12492,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3448057
-                        },
-                        {
-                            "instanceId": -8618,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.344854
-                        },
-                        {
-                            "instanceId": -8014,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3449015999995
-                        },
-                        {
-                            "instanceId": -6032,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3449492
-                        },
-                        {
-                            "instanceId": -5662,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3449967
-                        },
-                        {
-                            "instanceId": -4248,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3450459999995
-                        },
-                        {
-                            "instanceId": -3496,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3450938999995
-                        },
-                        {
-                            "instanceId": -2798,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3451429
-                        },
-                        {
-                            "instanceId": -2344,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3451905
-                        },
-                        {
-                            "instanceId": -1972,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3452403
-                        },
-                        {
-                            "instanceId": 30702,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3452878
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1144,104 +1033,7 @@
                         "statusZombi"
                     ],
                     "comment": "2. Статус зомби меняется на 'run'.",
-                    "trackedInstances": [
-                        {
-                            "instanceId": -15814,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3456114
-                        },
-                        {
-                            "instanceId": -14940,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3456312
-                        },
-                        {
-                            "instanceId": -14570,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3456491
-                        },
-                        {
-                            "instanceId": -14414,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3456684
-                        },
-                        {
-                            "instanceId": -12792,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.345686
-                        },
-                        {
-                            "instanceId": -12492,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457035
-                        },
-                        {
-                            "instanceId": -8618,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457202
-                        },
-                        {
-                            "instanceId": -8014,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457369
-                        },
-                        {
-                            "instanceId": -6032,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457547
-                        },
-                        {
-                            "instanceId": -5662,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457714
-                        },
-                        {
-                            "instanceId": -4248,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3457886999995
-                        },
-                        {
-                            "instanceId": -3496,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3458054
-                        },
-                        {
-                            "instanceId": -2798,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.345822
-                        },
-                        {
-                            "instanceId": -2344,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3458395
-                        },
-                        {
-                            "instanceId": -1972,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.345857599999
-                        },
-                        {
-                            "instanceId": 30702,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3458745
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1253,104 +1045,7 @@
                         "isRunning"
                     ],
                     "comment": "3. Скорость NavMeshAgent возвращается к нормальной (3).",
-                    "trackedInstances": [
-                        {
-                            "instanceId": -15814,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3461836
-                        },
-                        {
-                            "instanceId": -14940,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3461969
-                        },
-                        {
-                            "instanceId": -14570,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462107
-                        },
-                        {
-                            "instanceId": -14414,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462258
-                        },
-                        {
-                            "instanceId": -12792,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462394
-                        },
-                        {
-                            "instanceId": -12492,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462535
-                        },
-                        {
-                            "instanceId": -8618,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.346267
-                        },
-                        {
-                            "instanceId": -8014,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462813999995
-                        },
-                        {
-                            "instanceId": -6032,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3462953
-                        },
-                        {
-                            "instanceId": -5662,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463108999995
-                        },
-                        {
-                            "instanceId": -4248,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463249999995
-                        },
-                        {
-                            "instanceId": -3496,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463387
-                        },
-                        {
-                            "instanceId": -2798,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463523
-                        },
-                        {
-                            "instanceId": -2344,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463664
-                        },
-                        {
-                            "instanceId": -1972,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3463808
-                        },
-                        {
-                            "instanceId": 30702,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.346394499999
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1362,104 +1057,7 @@
                         "stoppingDistance"
                     ],
                     "comment": "4. Снимается стоп с NavMeshAgent (isStopped = false).",
-                    "trackedInstances": [
-                        {
-                            "instanceId": -15814,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3467149
-                        },
-                        {
-                            "instanceId": -14940,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3467396
-                        },
-                        {
-                            "instanceId": -14570,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3467635
-                        },
-                        {
-                            "instanceId": -14414,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3467884
-                        },
-                        {
-                            "instanceId": -12792,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3468121999995
-                        },
-                        {
-                            "instanceId": -12492,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3468359
-                        },
-                        {
-                            "instanceId": -8618,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3468596
-                        },
-                        {
-                            "instanceId": -8014,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3468833
-                        },
-                        {
-                            "instanceId": -6032,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3469088
-                        },
-                        {
-                            "instanceId": -5662,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3469325
-                        },
-                        {
-                            "instanceId": -4248,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3469577999995
-                        },
-                        {
-                            "instanceId": -3496,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3469829999995
-                        },
-                        {
-                            "instanceId": -2798,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3470071
-                        },
-                        {
-                            "instanceId": -2344,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3470308999995
-                        },
-                        {
-                            "instanceId": -1972,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3470554
-                        },
-                        {
-                            "instanceId": 30702,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3470793
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1471,104 +1069,7 @@
                         "zombiSpeedDebug"
                     ],
                     "comment": "5. Агенту сразу задаётся цель — позиция игрока. Зомби начинает движение.",
-                    "trackedInstances": [
-                        {
-                            "instanceId": -15814,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3474116
-                        },
-                        {
-                            "instanceId": -14940,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3474332
-                        },
-                        {
-                            "instanceId": -14570,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3474556
-                        },
-                        {
-                            "instanceId": -14414,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3474786
-                        },
-                        {
-                            "instanceId": -12792,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3475006
-                        },
-                        {
-                            "instanceId": -12492,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3475231
-                        },
-                        {
-                            "instanceId": -8618,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3475449
-                        },
-                        {
-                            "instanceId": -8014,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3475663
-                        },
-                        {
-                            "instanceId": -6032,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3475886999995
-                        },
-                        {
-                            "instanceId": -5662,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3476105
-                        },
-                        {
-                            "instanceId": -4248,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.347632999999
-                        },
-                        {
-                            "instanceId": -3496,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.347656
-                        },
-                        {
-                            "instanceId": -2798,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.347678
-                        },
-                        {
-                            "instanceId": -2344,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.347699999999
-                        },
-                        {
-                            "instanceId": -1972,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3477222
-                        },
-                        {
-                            "instanceId": 30702,
-                            "lastValue": "",
-                            "highlightStartTime": 0.0,
-                            "lastCheckTime": 5145.3477443
-                        }
-                    ],
+                    "trackedInstances": [],
                     "isMonoBehaviourTracked": true,
                     "hostScriptName": "",
                     "instanceFieldName": ""
@@ -1596,9 +1097,17 @@
                     "instanceFieldName": ""
                 }
             ],
-            "isTracking": true,
+            "isTracking": false,
             "lastUpdateTime": "",
-            "isExpanded": true
+            "isExpanded": false
+        },
+        {
+            "pathName": "Зомби двигается к игроку при быстрых выстрелах в него(когда не успевает закончится анимация)",
+            "description": "",
+            "steps": [],
+            "isTracking": false,
+            "lastUpdateTime": "",
+            "isExpanded": false
         }
     ]
 }
